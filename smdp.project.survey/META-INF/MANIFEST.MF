@@ -1,6 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: smdp.project.survey
-Bundle-SymbolicName: smdp.project.survey; singleton:=true
+Bundle-Name: %pluginName
+Bundle-SymbolicName: smdp.project.survey;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Require-Bundle: org.eclipse.emf.ecore
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: survey,
+ survey.impl,
+ survey.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore
+Bundle-ActivationPolicy: lazy
