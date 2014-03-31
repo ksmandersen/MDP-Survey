@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: smdp.project.survey.SurveyDSL.ui
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: smdp.project.survey.SurveyDSL.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: smdp.project.survey.SurveyDSL;visibility:=reexport,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.ui,
+ org.eclipse.xtext.builder,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: smdp.project.survey.ui.quickfix,
+ smdp.project.survey.ui.contentassist,
+ smdp.project.survey.ui.contentassist.antlr,
+ smdp.project.survey.ui.internal
+Bundle-Activator: smdp.project.survey.ui.internal.SurveyDSLActivator

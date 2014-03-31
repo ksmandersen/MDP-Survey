@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="smdp.project.survey.SurveyDSL.sdk"
+	label="SurveyDSL SDK Feature "
+	version="1.0.0.qualifier">
+	<plugin
+			id="smdp.project.survey.SurveyDSL"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="smdp.project.survey.SurveyDSL.ui"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+</feature>
