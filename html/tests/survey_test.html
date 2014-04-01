@@ -1,0 +1,67 @@
+<html>
+<head>
+ <title> Survey Templates </title> 
+ <link href=survey.css rel=stylesheet>
+ <script>
+
+ </script>
+</head>
+<body>
+  <form name="input" action="survey_text.html" method="get">
+  <div class="titleDiv">
+	<h1> My Survey </h1> 
+  </div>
+  <br>
+  
+  <div>
+  <table>
+  <tr>
+	<th>
+		Question #1: <br>
+		How would you rate _SUBJECT_?
+	</th>
+	</tr>
+	<tr><td> <input id="q01_op01" type="radio" name="q01" value="op01">  <label for="q01_op01"> Good </label> </td></tr>
+	<tr><td> <input id="q01_op02" type="radio" name="q01" value="op02">  <label for="q01_op02"> Very Good </label> </td></tr>
+	<tr><td> <input id="q01_op03" type="radio" name="q01" value="op03">  <label for="q01_op03"> Excellent! </label> </td></tr>
+	<tr><td> <input id="q01_op04" type="radio" name="q01" value="op04">  <label for="q01_op04"> Other:  </label> 
+			 <input id="q01_op04_text" name="q01t" type="text" size=80 maxlength=200> </td></tr>
+  </table>
+  </div>
+  <br>
+  
+  <div>
+  <table>
+  <tr>
+	<th>
+		Question #2: <br>
+		Which do you like?  (Tick all of interest)
+	</th>
+	</tr>
+	<tr> <td><input id="q02_op01" name="q02" type="checkbox" value="None" class="squaredFour"> <label for="q02_op01"> Music </label> </td> </tr>
+	<tr> <td><input id="q02_op02" name="q02" type="checkbox" value="None" class="squaredFour"> <label for="q02_op02"> Films </label> </td> </tr>
+	<tr> <td><input id="q02_op03" name="q02" type="checkbox" value="None" class="squaredFour"> <label for="q02_op03"> Travel </label> </td> </tr>
+	<tr> <td><input id="q02_op04" name="q02" type="checkbox" value="None" class="squaredFour"> <label for="q02_op04"> Sports </label> </td> </tr>
+  </table>
+  </div>
+  <br>
+  
+  <div>
+  <table>
+  <tr>
+	<th>
+		Question #3: <br>
+		Tell us what you think
+	</th>
+	</tr>
+	<tr> <td>
+	<textarea id="q03_op01" rows=4> Please enter your opinion here... </textarea> 
+	</td> </tr>
+  </table>
+  </div>
+  <br>
+  
+ <input type="submit" value="Submit">
+ </form>
+</body>
+</html>
