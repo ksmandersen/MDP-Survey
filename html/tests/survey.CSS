@@ -1,0 +1,38 @@
+	p { color:#ffd835 ; font:14pt Helvetica }
+ 	p:first-line { color: green; font-size: 200% }
+ 	body { background:white }
+ 	Div	{
+		background	:   #EBEFF3;
+		padding		:	0.5%;
+		font-family	:   Times, Verdana;
+		border		:	1px solid #EBEFF3;
+	}
+	
+	Div.titleDiv	{
+		background	:   #7EA8CA;
+		padding		:	2%;
+		font-family	:   Times, Verdana;
+	}
+	
+	table, th	{		border:1px solid black;		width:	100%;	}
+	
+	th			{		background:	#7EA8CA;		text-align:	Left;	}
+	
+	td			{		background: 	White;		}
+	td:hover		{		background: 	WhiteSmoke;	}
+	
+	input[type=radio]:checked {	border: 1px solid black;	}
+	
+	div:hover{	border:1px solid LightGray; }
+
+	textarea	{ resize: none; width:	100%;  }
+	text		{ resize: none; width:	70%;  }
+	
+	.red_caps {color:red; font-style:small-caps; font:14pt Courier;}
+	
+
+
+
+
+
+
