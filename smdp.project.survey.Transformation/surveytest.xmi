@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<survey:Survey xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:survey="platform:/resource/smdp.project.survey/model/model.ecore">
+  <questions xsi:type="survey:MultipleChoice" description="What is your favourite pet?" requiredPreviousAnswers="//@questions.0/@answers.0">
+    <answers description="I like dogs" name="dogAnswer"/>
+    <answers description="I hat dogs, but like cats" name="catAnswer"/>
+    <answers xsi:type="survey:OpenAnswer" description="What else?" name="otherAnswer"/>
+  </questions>
+</survey:Survey>

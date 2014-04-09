@@ -1,0 +1,7 @@
+multiple:
+	"What is your favourite pet?"
+	requires dogAnswer
+	answer dogAnswer "I like dogs"
+	answer catAnswer "I hat dogs, but like cats"
+	text otherAnswer "What else?"
+

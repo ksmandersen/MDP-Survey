@@ -15,11 +15,11 @@ public class Constraints {
     final Function1<Answer,Boolean> _function = new Function1<Answer,Boolean>() {
       public Boolean apply(final Answer it) {
         EList<Answer> _requiredPreviousAnswers = choice.getRequiredPreviousAnswers();
-        return Boolean.valueOf(_requiredPreviousAnswers.contains(it));
+        boolean _contains = _requiredPreviousAnswers.contains(it);
+        return Boolean.valueOf((!_contains));
       }
     };
-    boolean _forall = IterableExtensions.<Answer>forall(_answers, _function);
-    return (!_forall);
+    return IterableExtensions.<Answer>forall(_answers, _function);
   }
   
   protected static boolean _constraint(final EObject it) {

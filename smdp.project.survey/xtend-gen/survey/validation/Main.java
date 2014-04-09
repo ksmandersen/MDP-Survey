@@ -21,9 +21,9 @@ public class Main {
     XMIResourceFactoryImpl _xMIResourceFactoryImpl = new XMIResourceFactoryImpl();
     _extensionToFactoryMap.put("xmi", _xMIResourceFactoryImpl);
     SurveyPackage.eINSTANCE.eClass();
-    final ResourceSetImpl resourceSet = new ResourceSetImpl();
-    final URI uri = URI.createURI("surveytest.xmi");
-    final Resource resource = resourceSet.getResource(uri, true);
+    final ResourceSetImpl xmiResourceSet = new ResourceSetImpl();
+    final URI xmiUri = URI.createURI("surveytest.xmi");
+    final Resource resource = xmiResourceSet.getResource(xmiUri, true);
     TreeIterator<EObject> _allProperContents = EcoreUtil.<EObject>getAllProperContents(resource, false);
     final Function1<EObject,Boolean> _function = new Function1<EObject,Boolean>() {
       public Boolean apply(final EObject it) {
