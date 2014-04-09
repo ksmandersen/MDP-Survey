@@ -1,7 +1,24 @@
 multiple:
 	"What is your favourite pet?"
-	requires dogAnswer
 	answer dogAnswer "I like dogs"
 	answer catAnswer "I hat dogs, but like cats"
 	text otherAnswer "What else?"
 
+single:
+	"What is better? Coffee or tea?"
+	optional
+	require teaAnswer
+	answer teaAnswer "Tea"
+	answer coffeeAnswer "Coffee" 
+
+multiple:
+	"Your favourite cold beverages"
+	optional
+	requires catAnswer
+	answer cola "Cocoa Cola"
+	answer water "Water"
+
+open:
+	"Describe how you feel about Windows XP"
+	optional
+	text xpAnswer

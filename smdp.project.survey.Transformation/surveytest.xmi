@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="ASCII"?>
 <survey:Survey xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:survey="platform:/resource/smdp.project.survey/model/model.ecore">
-  <questions xsi:type="survey:MultipleChoice" description="What is your favourite pet?" requiredPreviousAnswers="//@questions.0/@answers.0">
+  <questions xsi:type="survey:MultipleChoice" description="What is your favourite pet?">
     <answers description="I like dogs" name="dogAnswer"/>
     <answers description="I hat dogs, but like cats" name="catAnswer"/>
     <answers xsi:type="survey:OpenAnswer" description="What else?" name="otherAnswer"/>
+  </questions>
+  <questions xsi:type="survey:RadioChoice" description="What is better? Coffee or tea?" isOptional="true"/>
+  <questions xsi:type="survey:MultipleChoice" description="Your favourite cold beverages" requiredPreviousAnswers="//@questions.0/@answers.1" isOptional="true">
+    <answers description="Cocoa Cola" name="cola"/>
+    <answers description="Water" name="water"/>
+  </questions>
+  <questions xsi:type="survey:OpenQuestion" description="Describe how you feel about Windows XP" isOptional="true">
+    <openAnswer name="xpAnswer"/>
   </questions>
 </survey:Survey>
