@@ -1,10 +1,10 @@
 package smdp.project.survey.transformations;
 
-import survey.SurveyPackage;
-
 @SuppressWarnings("all")
 public class Main {
   public static void main(final String[] args) {
-    SurveyPackage.eINSTANCE.eClass();
+    throw new Error("Unresolved compilation problems:"
+      + "\nURI cannot be resolved to a type."
+      + "\ncreateURI cannot be resolved");
   }
 }
