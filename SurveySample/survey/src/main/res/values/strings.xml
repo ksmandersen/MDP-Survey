@@ -5,4 +5,18 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="question_favorite_pet">What is your favorite pet?</string>
+    <string name="answer_pet_dog">I like dogs</string>
+    <string name="answer_pet_cat">I hate dogs, cats are cool</string>
+    <string name="answer_pet_other">Something else?</string>
+
+    <string name="question_beverage">What is better? Coffee or tea?</string>
+    <string name="answer_beverage_tea">Tea</string>
+    <string name="answer_beverage_coffee">Coffee</string>
+
+    <string name="question_cold_beverage">Your favourite cold beverages</string>
+    <string name="answer_cold_beverage_cola">Cocoa Cola</string>
+    <string name="answer_cold_beverage_water">Water</string>
+
+    <string name="question_xp">Describe how you feel about Windows XP</string>
 </resources>
