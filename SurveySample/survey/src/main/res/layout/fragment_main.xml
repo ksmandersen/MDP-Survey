@@ -1,105 +1,52 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/question_layout"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="dk.itu.smdp.surveysample.survey.MainActivity$PlaceholderFragment">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/question_text_view"
+        android:text="@string/question_favorite_pet"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/question_answers_scrollview"
+        android:layout_below="@+id/question_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/question_favorite_pet_label"
-            android:text="@string/question_favorite_pet"
+
+        <include layout="@layout/question_fragment" />
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/question_buttons_view"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/question_button_previous"
+            android:text="@string/button_previous_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <CheckBox
-            android:text="@string/answer_pet_dog"
-            android:id="@+id/answer_favorite_pet_dog"
+        <Button
+            android:id="@+id/question_button_next"
+            android:text="@string/button_next_question"
+            android:layout_toRightOf="@id/question_button_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </RelativeLayout>
 
-        <CheckBox
-            android:text="@string/answer_pet_cat"
-            android:id="@+id/answer_favorite_pet_cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox
-                android:id="@+id/answer_favorite_pet_other"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:hint="@string/answer_pet_other"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-            <TextView
-                android:text="@string/question_beverage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                    <RadioButton
-                        android:text="@string/answer_beverage_tea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <RadioButton
-                        android:text="@string/answer_beverage_coffee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RadioGroup>
-        </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="@string/question_cold_beverage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <CheckBox
-            android:text="@string/answer_cold_beverage_cola"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <CheckBox
-            android:text="@string/answer_cold_beverage_water"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="@string/question_xp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:lines="3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
