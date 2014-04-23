@@ -33,3 +33,6 @@ tmp/
 local.properties
 .settings/
 .loadpath
+Report/report.pdf
+Report/report.aux
+Report/report.log
