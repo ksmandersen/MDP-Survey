@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -129,9 +131,15 @@ public class MainActivity extends ActionBarActivity {
             mQuestionTitleView.setText(question.getTitle());
 
             switch (question.getType()) {
-
-                default:
+                case QUESTION_TYPE_MULTIPLE_CHOICE:
                     insertMultipleChoice(question);
+                    break;
+                case QUESTION_TYPE_SINGLE_CHOICE:
+                    insertSingleChoice(question);
+                    break;
+                case QUESTION_TYPE_OPEN:
+                    break;
+                default:
                     break;
             }
 
@@ -149,6 +157,20 @@ public class MainActivity extends ActionBarActivity {
                 checkBox.setText(option.getTitle());
                 mOptionsLayout.addView(checkBox);
             }
+        }
+
+        private void insertSingleChoice(Question question) {
+            RadioGroup group = new RadioGroup(getActivity());
+            group.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            for (Option option : question.getOptions()) {
+                RadioButton radio = new RadioButton(getActivity());
+                radio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                radio.setText(option.getTitle());
+                group.addView(radio);
+            }
+
+            mOptionsLayout.addView(group);
         }
     }
 }
