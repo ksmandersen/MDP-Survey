@@ -3,9 +3,22 @@
  */
 package smdp.project.survey.generator;
 
+import com.google.common.collect.Iterables;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import survey.Answer;
+import survey.MultipleChoice;
+import survey.Question;
+import survey.Survey;
 
 /**
  * Generates code from your model files on save.
@@ -14,6 +27,270 @@ import org.eclipse.xtext.generator.IGenerator;
  */
 @SuppressWarnings("all")
 public class SurveyDSLGenerator implements IGenerator {
+  public static CharSequence compileActivity(final Survey it) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package com.example.surveytestapp;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("import android.support.v7.app.ActionBarActivity;");
+    _builder.newLine();
+    _builder.append("import android.support.v7.app.ActionBar;");
+    _builder.newLine();
+    _builder.append("import android.support.v4.app.Fragment;");
+    _builder.newLine();
+    _builder.append("import android.os.Bundle;");
+    _builder.newLine();
+    _builder.append("import android.view.LayoutInflater;");
+    _builder.newLine();
+    _builder.append("import android.view.Menu;");
+    _builder.newLine();
+    _builder.append("import android.view.MenuItem;");
+    _builder.newLine();
+    _builder.append("import android.view.View;");
+    _builder.newLine();
+    _builder.append("import android.view.ViewGroup;");
+    _builder.newLine();
+    _builder.append("import android.os.Build;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("public class MainActivity extends ActionBarActivity {");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("@Override");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("protected void onCreate(Bundle savedInstanceState) {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("super.onCreate(savedInstanceState);");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("setContentView(R.layout.activity_main);");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("if (savedInstanceState == null) {");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("getSupportFragmentManager().beginTransaction()");
+    _builder.newLine();
+    _builder.append("                    ");
+    _builder.append(".add(R.id.container, new PlaceholderFragment())");
+    _builder.newLine();
+    _builder.append("                    ");
+    _builder.append(".commit();");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("@Override");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("public boolean onCreateOptionsMenu(Menu menu) {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("// Inflate the menu; this adds items to the action bar if it is present.");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("getMenuInflater().inflate(R.menu.main, menu);");
+    _builder.newLine();
+    {
+      EList<Question> _questions = it.getQuestions();
+      final Function1<Question,Boolean> _function = new Function1<Question,Boolean>() {
+        public Boolean apply(final Question it) {
+          return Boolean.valueOf((it instanceof MultipleChoice));
+        }
+      };
+      Iterable<Question> _filter = IterableExtensions.<Question>filter(_questions, _function);
+      for(final Question mq : _filter) {
+        {
+          EList<Answer> _answers = ((MultipleChoice) mq).getAnswers();
+          for(final Answer a : _answers) {
+            _builder.append("System.out.println(");
+            String _name = a.getName();
+            _builder.append(_name, "");
+            _builder.append(");");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    _builder.append("        ");
+    _builder.append("return true;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("@Override");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("public boolean onOptionsItemSelected(MenuItem item) {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("// Handle action bar item clicks here. The action bar will");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("// automatically handle clicks on the Home/Up button, so long");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("// as you specify a parent activity in AndroidManifest.xml.");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("int id = item.getItemId();");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("if (id == R.id.action_settings) {");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("return true;");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("return super.onOptionsItemSelected(item);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("/**");
+    _builder.newLine();
+    _builder.append("     ");
+    _builder.append("* A placeholder fragment containing a simple view.");
+    _builder.newLine();
+    _builder.append("     ");
+    _builder.append("*/");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("public static class PlaceholderFragment extends Fragment {");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("public PlaceholderFragment() {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("@Override");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("public View onCreateView(LayoutInflater inflater, ViewGroup container,");
+    _builder.newLine();
+    _builder.append("                ");
+    _builder.append("Bundle savedInstanceState) {");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("View rootView = inflater.inflate(R.layout.fragment_main, container, false);");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("return rootView;");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public static CharSequence compileManifest(final Survey it) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    _builder.newLine();
+    _builder.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"");
+    _builder.newLine();
+    _builder.append("    \t");
+    _builder.append("package=\"dk.itu.smdp.surveygen.survey\" >");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("<application");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("android:allowBackup=\"true\"");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("android:icon=\"@drawable/ic_launcher\"");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("android:label=\"@string/app_name\"");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("android:theme=\"@style/AppTheme\" >");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("<activity");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("android:name=\"dk.itu.smdp.surveygen.survey.MainActivity\"");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("android:label=\"@string/app_name\" >");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("<intent-filter>");
+    _builder.newLine();
+    _builder.append("                ");
+    _builder.append("<action android:name=\"android.intent.action.MAIN\" />");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("                ");
+    _builder.append("<category android:name=\"android.intent.category.LAUNCHER\" />");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("</intent-filter>");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("</activity>");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("</application>");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("</manifest>");
+    _builder.newLine();
+    return _builder;
+  }
+  
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
+    TreeIterator<EObject> _allContents = resource.getAllContents();
+    Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
+    Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
+    final Procedure1<Survey> _function = new Procedure1<Survey>() {
+      public void apply(final Survey it) {
+        final String fname = "MainActivity";
+        String _plus = ("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname);
+        String _plus_1 = (_plus + ".java");
+        CharSequence _compileActivity = SurveyDSLGenerator.compileActivity(it);
+        fsa.generateFile(_plus_1, _compileActivity);
+        String _plus_2 = ("app-gen/" + "AndroidManifest");
+        String _plus_3 = (_plus_2 + ".xml");
+        CharSequence _compileManifest = SurveyDSLGenerator.compileManifest(it);
+        fsa.generateFile(_plus_3, _compileManifest);
+      }
+    };
+    IterableExtensions.<Survey>forEach(_filter, _function);
   }
 }
