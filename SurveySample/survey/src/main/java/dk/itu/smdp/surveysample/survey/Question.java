@@ -18,6 +18,42 @@ public class Question {
         mType = type;
         mIdentifier = identifier;
         mOptions = options;
+        mOptional = false;
+        mAnsweredOption = null;
+        mAnsweredText = null;
+    }
+
+    private Option mAnsweredOption;
+    public Option getAnsweredOption() {
+        return mAnsweredOption;
+    }
+
+    private String mAnsweredText;
+    public String answeredText() {
+        return mAnsweredText;
+    }
+
+    public void setAnswer(Option option, String answer) {
+        if (option == null || !mOptions.contains(option)) {
+            return;
+        }
+
+        if (mType == QuestionType.QUESTION_TYPE_OPEN &&
+            (answer == null || answer.equals(""))) {
+            return;
+        }
+
+        mAnsweredOption = option;
+        mAnsweredText = answer;
+    }
+
+    private boolean mOptional;
+    public boolean isOptional() {
+        return mOptional;
+    }
+
+    public void setOptional(boolean optional) {
+        mOptional = optional;
     }
 
     private List<Option> mOptions;

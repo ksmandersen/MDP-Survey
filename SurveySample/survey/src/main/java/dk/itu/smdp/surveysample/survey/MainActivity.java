@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -59,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener {
         private Button mPreviousButton;
         private Button mNextButton;
 
@@ -95,9 +97,14 @@ public class MainActivity extends ActionBarActivity {
             options.add(catOption);
             Question first = new Question(getString(R.string.hello_world), Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICE, "testQuestion", options);
 
+
             Option coffeOption = new Option("such wow");
+            Option teaOption = new Option("omg there was");
+
             List<Option> beverageOptions= new ArrayList<Option>();
             beverageOptions.add(coffeOption);
+            beverageOptions.add(teaOption);
+
             Question second = new Question(getString(R.string.question_cold_beverage), Question.QuestionType.QUESTION_TYPE_SINGLE_CHOICE, "beverageQuestion", beverageOptions);
 
             List<Question> questions = new ArrayList<Question>();
@@ -126,9 +133,34 @@ public class MainActivity extends ActionBarActivity {
             setActiveQuestion(newQuestion);
         }
 
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if (currentQuestion.getNext() == null) {
+                return;
+            }
+
+            boolean hasOneChecked = false;
+            int childs = mOptionsLayout.getChildCount();
+            for (int i = 0; i < childs; i++) {
+                View view = mOptionsLayout.getChildAt(i);
+                if (view instanceof Checkable) {
+                    hasOneChecked = ((Checkable) view).isChecked();
+                    if (hasOneChecked) {
+                        break;
+                    }
+                }
+            }
+
+            mNextButton.setEnabled(hasOneChecked);
+        }
+
         private void setActiveQuestion(Question question) {
             mPreviousButton.setEnabled(!question.isFirst());
             mNextButton.setEnabled(!question.isLast());
+
+            if (!question.isOptional()) {
+                mNextButton.setEnabled(false);
+            }
 
             clearQuestion();
 
@@ -159,6 +191,10 @@ public class MainActivity extends ActionBarActivity {
                 CheckBox checkBox = new CheckBox(getActivity());
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
                 checkBox.setText(option.getTitle());
+                checkBox.setOnCheckedChangeListener(this);
+                if (!question.isOptional()) {
+                    checkBox.setOnCheckedChangeListener(this);
+                }
                 mOptionsLayout.addView(checkBox);
             }
         }
@@ -171,6 +207,9 @@ public class MainActivity extends ActionBarActivity {
                 RadioButton radio = new RadioButton(getActivity());
                 radio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
                 radio.setText(option.getTitle());
+                if (!question.isOptional()) {
+                    radio.setOnCheckedChangeListener(this);
+                }
                 group.addView(radio);
             }
 
