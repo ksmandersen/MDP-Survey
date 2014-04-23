@@ -84,6 +84,12 @@ public class MainActivity extends ActionBarActivity {
             mQuestionTitleView = (TextView)rootView.findViewById(R.id.question_text_view);
             mOptionsLayout = (LinearLayout)rootView.findViewById(R.id.question_options);
 
+            createSurvey();
+
+            return rootView;
+        }
+
+        private void createSurvey() {
             Option catOption = new Option(getString(R.string.answer_pet_cat));
             List<Option> options = new ArrayList<Option>();
             options.add(catOption);
@@ -101,8 +107,6 @@ public class MainActivity extends ActionBarActivity {
             mSurvey = new Survey(questions);
 
             setActiveQuestion(mSurvey.getFirstQuestion());
-
-            return rootView;
         }
 
         @Override
