@@ -1,18 +1,25 @@
 package dk.itu.smdp.surveysample.survey;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +30,9 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-    }
 
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,16 +57,98 @@ public class MainActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+        private Button mPreviousButton;
+        private Button mNextButton;
 
-        public PlaceholderFragment() {
-        }
+        private Survey mSurvey;
+        private Question currentQuestion;
+        private TextView mQuestionTitleView;
+        private LinearLayout mOptionsLayout;
+
+        public PlaceholderFragment() {}
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            mPreviousButton = (Button)rootView.findViewById(R.id.question_button_previous);
+            mPreviousButton.setOnClickListener(this);
+
+            mNextButton = (Button)rootView.findViewById(R.id.question_button_next);
+            mNextButton.setOnClickListener(this);
+
+            mQuestionTitleView = (TextView)rootView.findViewById(R.id.question_text_view);
+            mOptionsLayout = (LinearLayout)rootView.findViewById(R.id.question_options);
+
+            Option catOption = new Option(getString(R.string.answer_pet_cat));
+            List<Option> options = new ArrayList<Option>();
+            options.add(catOption);
+            Question first = new Question(getString(R.string.hello_world), Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICE, "testQuestion", options);
+
+            Option coffeOption = new Option("such wow");
+            List<Option> beverageOptions= new ArrayList<Option>();
+            beverageOptions.add(coffeOption);
+            Question second = new Question(getString(R.string.question_cold_beverage), Question.QuestionType.QUESTION_TYPE_SINGLE_CHOICE, "beverageQuestion", beverageOptions);
+
+            List<Question> questions = new ArrayList<Question>();
+            questions.add(first);
+            questions.add(second);
+
+            mSurvey = new Survey(questions);
+
+            setActiveQuestion(mSurvey.getFirstQuestion());
+
             return rootView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Question newQuestion;
+            if (view == mNextButton) {
+                newQuestion = currentQuestion.getNext();
+            } else {
+                newQuestion = currentQuestion.getPrevious();
+            }
+
+            // We have no questions in that direction
+            if (newQuestion == null) {
+                return;
+            }
+
+            setActiveQuestion(newQuestion);
+        }
+
+        private void setActiveQuestion(Question question) {
+            mPreviousButton.setEnabled(!question.isFirst());
+            mNextButton.setEnabled(!question.isLast());
+
+            clearQuestion();
+
+            mQuestionTitleView.setText(question.getTitle());
+
+            switch (question.getType()) {
+
+                default:
+                    insertMultipleChoice(question);
+                    break;
+            }
+
+            currentQuestion = question;
+        }
+
+        private void clearQuestion() {
+            mOptionsLayout.removeAllViews();
+        }
+
+        private void insertMultipleChoice(Question question) {
+            for (Option option : question.getOptions()) {
+                CheckBox checkBox = new CheckBox(getActivity());
+                checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                checkBox.setText(option.getTitle());
+                mOptionsLayout.addView(checkBox);
+            }
         }
     }
 }
