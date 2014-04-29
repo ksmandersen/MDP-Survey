@@ -31,20 +31,25 @@ public class UnitTests {
   public void pTest1() {
     try {
       SurveyPackageImpl.init();
-      final Survey model = this.parser.parse("multiple:\r\n\t\t\"What is your favourite pet?\"\t\t\r\n\t\tanswer dogAnswer \"I like dogs\"\r\n\t\tanswer catAnswer \"I hate dogs, but I like cats\"\r\n\t\ttext otherAnswer \"What else?\"\r\n\t\tsingle:\r\n\t\t\"What is better? Coffee or tea?\"\r\n\t\toptional\r\n\t\trequires dogAnswer\t\t\r\n\t\tanswer teaAnswer \"Tea\"\r\n\t\tanswer coffeeAnswer \"Coffee\"\r\n\t\topen:\r\n\t\t\"Describe how you feel about Windows XP\"\r\n\t\toptional\r\n\t\ttext xpAnswer ");
-      FileReader _fileReader = new FileReader("surveytest.survey");
+      FileReader _fileReader = new FileReader("ptest1.survey");
       final List<String> lines = CharStreams.readLines(_fileReader);
+      String conc = "";
+      for (final String s : lines) {
+        String _plus = (conc + s);
+        conc = _plus;
+      }
+      final Survey model = this.parser.parse(conc);
       EList<Question> _questions = model.getQuestions();
       Question _head = IterableExtensions.<Question>head(_questions);
       final boolean entity = (_head instanceof MultipleChoice);
       Assert.assertTrue(entity);
       EList<Question> _questions_1 = model.getQuestions();
-      Question _get = _questions_1.get(1);
+      Question _get = _questions_1.get(2);
       EList<Answer> _requiredPreviousAnswers = _get.getRequiredPreviousAnswers();
       Answer _head_1 = IterableExtensions.<Answer>head(_requiredPreviousAnswers);
       final Answer req = ((Answer) _head_1);
       String _name = req.getName();
-      Assert.assertEquals("dogAnswer", _name);
+      Assert.assertEquals("teaAnswer", _name);
       EList<Question> _questions_2 = model.getQuestions();
       Question _get_1 = _questions_2.get(1);
       final boolean opt = _get_1.isIsOptional();

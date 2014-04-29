@@ -25,28 +25,16 @@ class UnitTests {
  
 	@Test
 	def void pTest1() {
-		SurveyPackageImpl.init()
-		val model = parser.parse("multiple:
-		\"What is your favourite pet?\"		
-		answer dogAnswer \"I like dogs\"
-		answer catAnswer \"I hate dogs, but I like cats\"
-		text otherAnswer \"What else?\"
-		single:
-		\"What is better? Coffee or tea?\"
-		optional
-		requires dogAnswer		
-		answer teaAnswer \"Tea\"
-		answer coffeeAnswer \"Coffee\"
-		open:
-		\"Describe how you feel about Windows XP\"
-		optional
-		text xpAnswer ")
-		val lines = new FileReader("surveytest.survey").readLines
-		//model2.forEach[model3 += it]
+		SurveyPackageImpl.init()		
+		val lines = new FileReader("ptest1.survey").readLines		
+		var conc = ""
+		for(String s : lines) 
+			conc = conc + s
+		val model = parser.parse(conc)
 		val entity = model.questions.head instanceof MultipleChoice
 		assertTrue(entity)
-		val req = model.questions.get(1).requiredPreviousAnswers.head as Answer
-		assertEquals("dogAnswer", req.name)
+		val req = model.questions.get(2).requiredPreviousAnswers.head as Answer
+		assertEquals("teaAnswer", req.name)
 		val opt = model.questions.get(1).isOptional
 		assertTrue(opt)
 	}
