@@ -40,7 +40,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -140,11 +139,10 @@ public class MainActivity extends ActionBarActivity {
             }
 
             boolean hasOneChecked = false;
-            int childs = mOptionsLayout.getChildCount();
-            for (int i = 0; i < childs; i++) {
-                View view = mOptionsLayout.getChildAt(i);
-                if (view instanceof Checkable) {
-                    hasOneChecked = ((Checkable) view).isChecked();
+            for (Option option : currentQuestion.getOptions()) {
+                Checkable view = option.getView();
+                if (view != null) {
+                    hasOneChecked = view.isChecked();
                     if (hasOneChecked) {
                         break;
                     }
@@ -158,8 +156,14 @@ public class MainActivity extends ActionBarActivity {
             mPreviousButton.setEnabled(!question.isFirst());
             mNextButton.setEnabled(!question.isLast());
 
+            boolean hasOneChecked = question.getAnsweredOption() != null;
             if (!question.isOptional()) {
-                mNextButton.setEnabled(false);
+                mNextButton.setEnabled(hasOneChecked);
+            }
+
+            if (question.isLast()) {
+                // Hide next button
+                // Show submit button
             }
 
             clearQuestion();
@@ -183,10 +187,25 @@ public class MainActivity extends ActionBarActivity {
         }
 
         private void clearQuestion() {
+            if (currentQuestion != null) {
+                List<Option> options = currentQuestion.getOptions();
+                if (options != null) {
+                    for (Option option : options) {
+                        Checkable view = option.getView();
+                        if (view != null && view.isChecked()) {
+                            currentQuestion.setAnswer(option, null);
+                        }
+
+                        option.setView(null);
+                    }
+                }
+            }
+
             mOptionsLayout.removeAllViews();
         }
 
         private void insertMultipleChoice(Question question) {
+            Option answer = question.getAnsweredOption();
             for (Option option : question.getOptions()) {
                 CheckBox checkBox = new CheckBox(getActivity());
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -195,7 +214,11 @@ public class MainActivity extends ActionBarActivity {
                 if (!question.isOptional()) {
                     checkBox.setOnCheckedChangeListener(this);
                 }
+                if (answer != null && answer == option) {
+                    checkBox.setChecked(true);
+                }
                 mOptionsLayout.addView(checkBox);
+                option.setView(checkBox);
             }
         }
 
@@ -203,6 +226,7 @@ public class MainActivity extends ActionBarActivity {
             RadioGroup group = new RadioGroup(getActivity());
             group.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
+            Option answer = question.getAnsweredOption();
             for (Option option : question.getOptions()) {
                 RadioButton radio = new RadioButton(getActivity());
                 radio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -210,7 +234,11 @@ public class MainActivity extends ActionBarActivity {
                 if (!question.isOptional()) {
                     radio.setOnCheckedChangeListener(this);
                 }
+                if (answer != null && answer == option) {
+                    radio.setChecked(true);
+                }
                 group.addView(radio);
+                option.setView(radio);
             }
 
             mOptionsLayout.addView(group);
