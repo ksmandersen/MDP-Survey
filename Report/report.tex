@@ -8,7 +8,7 @@
 \usepackage{graphicx}
 
 \usepackage{url}
-\urldef{\mailsa}\path|{jrra,ksma,atha}@itu.dk|
+\urldef{\mailsa}\path|{jrra,ksma,atka}@itu.dk|
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
 \graphicspath{{images/}}
@@ -60,8 +60,17 @@ How much you have managed to achieve?
 Domain analysis and the meta-model
 Concrete-syntax (interesting aspects of the grammar)
 How and what design principles you followed? (cite literature) \\
-When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey\cite{surveymonkey} and Obsurvey\cite{obsurvey} as inspiration. The language is specifically designed to support their survey design. The surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to type free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. 
-The meta-model shown in figure \ref{??} attempts to capture the structure of the investigated surveys. A survey must contain at least one question. A question has a type indicating the amount and types of answers allowed. A question might require specific previous answers and should only be made available if all the required answers were chosen by the user. This is useful when some answers make the following questions irrelevant. Questions of the type MultipleChoice allow users to choose multiple predefined answers, while RadioChoice questions should only allow a single answer. Open questions do not contain any predefined answers but allow a user to define the answer themselves. An open question must contain a single answer (usually an editable text box).
+When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey\cite{surveymonkey} and Obsurvey\cite{obsurvey} as inspiration. The language is specifically designed to support their survey design. The surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to type free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. A question can depend on previous answers meaning it is only shown if a certain answer was chosen earlier. This is useful when some answers make the following questions irrelevant. The combined functionality of the investigated surveys lead to the following requirements for the survey system:
+\begin{itemize}
+\item  A survey must contain at least one question. 
+\item A question has a type indicating the amount and types of answers allowed. 
+\item A question can require specific previous answers and should only be made available if all the required answers were chosen by the user. 
+\item Multiple choice questions allow users to choose multiple predefined answers.
+\item RadioChoice questions should only allow a single answer. 
+\item Open questions do not contain any predefined answers but allow a user to define the answer themselves. 
+\item An open question must contain a single answer.
+\end{itemize}
+The structure of the meta-model shown in figure \ref{??} is based on these requirements and as such attempts to capture the structure of the investigated surveys. The Survey root element contains one or more questions, each of 
 \medskip
 
 \noindent
