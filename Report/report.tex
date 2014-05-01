@@ -61,18 +61,19 @@ What are the requirements for your DSL? Who is the target user?
 How much you have managed to achieve?
 
 \section{System Overview}
-This section seeks to provide an overview of the system as a whole. The system is described as a model hierarchy depicted in figure \ref{fig:mhier} and is inspired by the notation used by the Meta-Object Facility (MOF). 
+This section seeks to provide an overview of the system as a whole. The system is visualized as a model hierarchy in figure \ref{fig:mhier} and is an adaptation of the Object Management Group\cite{omg} modeling architecture. Additional system details have been added to provide more information about the system flow - that is, where and when various programming-specific tasks take place.
 \begin{figure}
 \centering
 \includegraphics[height=6.2cm]{modelhierarchy}
-\caption{A figure depicting the model hierarchy of the system. The m-levels are an inspiration by the Meta-Object Facility (MOF)\textbf{CITE}.}
+\caption{A figure depicting the model hierarchy of the system. The m-levels are a notation adopted by the Object Management Group\cite{omg} modeling architecture.}
 \label{fig:mhier}
 \end{figure}
+The Ecore language is placed at the top level of the system which makes it possible to construct a meta-model of our language. Together with the abstract syntax, the structure and relations of the meta-model is passed to the concrete syntax at level m1. At this level, a language-specific file (*.survey) is the center of attention. Constraints are checked against this file and code is generated from this file. The real survey is placed on the bottom level and can take on different forms. In our case, we are concerned with files that provide the core of an Android application and a web application.
 
 \section{Language Design}
-Domain analysis and the meta-model
-Concrete-syntax (interesting aspects of the grammar)
-How and what design principles you followed? (cite literature) \\
+%Domain analysis and the meta-model
+%Concrete-syntax (interesting aspects of the grammar)
+%How and what design principles you followed? (cite literature) \\
 When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey\cite{surveymonkey} and Obsurvey\cite{obsurvey} as inspiration. The language is specifically designed to support their survey design. The surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to type free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. A question can depend on previous answers meaning it is only shown if a certain answer was chosen earlier. This is useful when some answers make the following questions irrelevant. The combined functionality of the investigated surveys lead to the following requirements for the survey system:
 \begin{itemize}
 \item  A survey must contain at least one question. 
