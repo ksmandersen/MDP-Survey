@@ -1,0 +1,15 @@
+multiple:
+
+open:
+	"How are you?"
+
+multiple:
+	"Describe something"
+	text a "test"
+	
+multiple:
+	"Simple Blob"
+	optional
+	requires anAnswer
+	answer a "Banana"
+	answer b "Chain"

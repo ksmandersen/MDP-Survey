@@ -26,16 +26,34 @@ class UnitTests {
 	@Test
 	def void pTest1() {
 		SurveyPackageImpl.init()		
-		val lines = new FileReader("ptest1.survey").readLines		
-		var conc = ""
-		for(String s : lines) 
-			conc = conc + s
-		val model = parser.parse(conc)
+		val model = parser.parse(getStringFromFile("ptest1.survey"))
 		val entity = model.questions.head instanceof MultipleChoice
 		assertTrue(entity)
 		val req = model.questions.get(2).requiredPreviousAnswers.head as Answer
 		assertEquals("teaAnswer", req.name)
 		val opt = model.questions.get(1).isOptional
 		assertTrue(opt)
+		val question = model.questions.get(0) as MultipleChoice
+		assertTrue(question.answers.size == 3)
+	}
+	
+	@Test
+	def void nTest1() {
+		SurveyPackageImpl.init()		
+		val model = parser.parse(getStringFromFile("ntest1.survey"))
+		val entity = model.questions.head as MultipleChoice
+		assertNull(entity.description)
+		assertTrue(entity.answers.empty)
+		assertFalse(entity.isOptional)
+		val req = model.questions.size == 3
+		assertTrue(req)	
+	}
+	
+	def String getStringFromFile(String path){
+		val lines = new FileReader(path).readLines		
+		var conc = ""
+		for(String s : lines) 
+			conc = conc + s
+		return conc
 	}
 }

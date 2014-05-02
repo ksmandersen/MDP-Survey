@@ -31,14 +31,8 @@ public class UnitTests {
   public void pTest1() {
     try {
       SurveyPackageImpl.init();
-      FileReader _fileReader = new FileReader("ptest1.survey");
-      final List<String> lines = CharStreams.readLines(_fileReader);
-      String conc = "";
-      for (final String s : lines) {
-        String _plus = (conc + s);
-        conc = _plus;
-      }
-      final Survey model = this.parser.parse(conc);
+      String _stringFromFile = this.getStringFromFile("ptest1.survey");
+      final Survey model = this.parser.parse(_stringFromFile);
       EList<Question> _questions = model.getQuestions();
       Question _head = IterableExtensions.<Question>head(_questions);
       final boolean entity = (_head instanceof MultipleChoice);
@@ -54,6 +48,53 @@ public class UnitTests {
       Question _get_1 = _questions_2.get(1);
       final boolean opt = _get_1.isIsOptional();
       Assert.assertTrue(opt);
+      EList<Question> _questions_3 = model.getQuestions();
+      Question _get_2 = _questions_3.get(0);
+      final MultipleChoice question = ((MultipleChoice) _get_2);
+      EList<Answer> _answers = question.getAnswers();
+      int _size = _answers.size();
+      boolean _equals = (_size == 3);
+      Assert.assertTrue(_equals);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void nTest1() {
+    try {
+      SurveyPackageImpl.init();
+      String _stringFromFile = this.getStringFromFile("ntest1.survey");
+      final Survey model = this.parser.parse(_stringFromFile);
+      EList<Question> _questions = model.getQuestions();
+      Question _head = IterableExtensions.<Question>head(_questions);
+      final MultipleChoice entity = ((MultipleChoice) _head);
+      String _description = entity.getDescription();
+      Assert.assertNull(_description);
+      EList<Answer> _answers = entity.getAnswers();
+      boolean _isEmpty = _answers.isEmpty();
+      Assert.assertTrue(_isEmpty);
+      boolean _isIsOptional = entity.isIsOptional();
+      Assert.assertFalse(_isIsOptional);
+      EList<Question> _questions_1 = model.getQuestions();
+      int _size = _questions_1.size();
+      final boolean req = (_size == 3);
+      Assert.assertTrue(req);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  public String getStringFromFile(final String path) {
+    try {
+      FileReader _fileReader = new FileReader(path);
+      final List<String> lines = CharStreams.readLines(_fileReader);
+      String conc = "";
+      for (final String s : lines) {
+        String _plus = (conc + s);
+        conc = _plus;
+      }
+      return conc;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

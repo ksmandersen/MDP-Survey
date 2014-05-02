@@ -8,6 +8,8 @@ import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess
 import survey.Survey
 import survey.MultipleChoice
+import smdp.project.survey.validation.SurveyDSLValidator
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Generates code from your model files on save.
@@ -120,12 +122,14 @@ class SurveyDSLGenerator implements IGenerator {
 	}
 	
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-		resource.allContents.toIterable.filter(typeof(Survey)).
-			forEach [ Survey it |
-				val fname = "MainActivity"
-				// generate Java implementation
-				fsa.generateFile("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname + ".java", it.compileActivity)
-				fsa.generateFile("app-gen/" + "AndroidManifest" + ".xml", it.compileManifest)
-			]
+		if(EcoreUtil.getAllProperContents(resource, false).forall[SurveyDSLValidator.constraint(it)])
+			resource.allContents.toIterable.filter(typeof(Survey)).
+				forEach [ Survey it |
+					val fname = "MainActivity"
+					// generate Java implementation
+					fsa.generateFile("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname + ".java", it.compileActivity)
+					fsa.generateFile("app-gen/" + "AndroidManifest" + ".xml", it.compileManifest)
+				]
+		else println("Constraints violated. Either a question contains a reference to its own answer or a description string is empty.")
 	}
 }

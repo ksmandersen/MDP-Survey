@@ -8,13 +8,16 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import smdp.project.survey.validation.SurveyDSLValidator;
 import survey.Answer;
 import survey.MultipleChoice;
 import survey.Question;
@@ -275,22 +278,34 @@ public class SurveyDSLGenerator implements IGenerator {
   }
   
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
-    TreeIterator<EObject> _allContents = resource.getAllContents();
-    Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
-    Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
-    final Procedure1<Survey> _function = new Procedure1<Survey>() {
-      public void apply(final Survey it) {
-        final String fname = "MainActivity";
-        String _plus = ("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname);
-        String _plus_1 = (_plus + ".java");
-        CharSequence _compileActivity = SurveyDSLGenerator.compileActivity(it);
-        fsa.generateFile(_plus_1, _compileActivity);
-        String _plus_2 = ("app-gen/" + "AndroidManifest");
-        String _plus_3 = (_plus_2 + ".xml");
-        CharSequence _compileManifest = SurveyDSLGenerator.compileManifest(it);
-        fsa.generateFile(_plus_3, _compileManifest);
+    TreeIterator<EObject> _allProperContents = EcoreUtil.<EObject>getAllProperContents(resource, false);
+    final Function1<EObject,Boolean> _function = new Function1<EObject,Boolean>() {
+      public Boolean apply(final EObject it) {
+        boolean _constraint = SurveyDSLValidator.constraint(it);
+        return Boolean.valueOf(_constraint);
       }
     };
-    IterableExtensions.<Survey>forEach(_filter, _function);
+    boolean _forall = IteratorExtensions.<EObject>forall(_allProperContents, _function);
+    if (_forall) {
+      TreeIterator<EObject> _allContents = resource.getAllContents();
+      Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
+      Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
+      final Procedure1<Survey> _function_1 = new Procedure1<Survey>() {
+        public void apply(final Survey it) {
+          final String fname = "MainActivity";
+          String _plus = ("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname);
+          String _plus_1 = (_plus + ".java");
+          CharSequence _compileActivity = SurveyDSLGenerator.compileActivity(it);
+          fsa.generateFile(_plus_1, _compileActivity);
+          String _plus_2 = ("app-gen/" + "AndroidManifest");
+          String _plus_3 = (_plus_2 + ".xml");
+          CharSequence _compileManifest = SurveyDSLGenerator.compileManifest(it);
+          fsa.generateFile(_plus_3, _compileManifest);
+        }
+      };
+      IterableExtensions.<Survey>forEach(_filter, _function_1);
+    } else {
+      InputOutput.<String>println("Constraints violated. Either a question contains a reference to its own answer or a description string is empty.");
+    }
   }
 }
