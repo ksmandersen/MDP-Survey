@@ -43,23 +43,6 @@ This paper covers the process of modelling and structuring an external domain-sp
 
 This paper describes the design and implementation of a Domain Specific Language (DSL) for generating survey applications. The purpose of the project is to design a language that can be used by a non-programmer to define surveys. These surveys can then be used to generate applications for answering surveys on multiple platforms. This reduces the amount of code duplication a programmer would generally encounter while writing a survey application for multiple platforms. In turn this also reduces the time development takes. Most importantly the survey DSL along with the code generation tool can be used to generate and endless number of survey applications without rewriting any code.
 
-\subsection{Requirements}
-
-setting: MDP course at ITU
-Objective: Build a survey DSL language to generate survey applications.
-Benefits of DSL: Generate code for multiple platforms using domain language. Reduce code duplication and development time.
-
-Requirements: Use domain language. 
-
-
-
-What is the purpose of this project?
-Objectives? Goals? What do you want to achieve?
-What are the benefits(and disadvantages\/cost) of using a domain
-specific language for this task?
-What are the requirements for your DSL? Who is the target user?
-How much you have managed to achieve?
-
 \section{System Overview}
 This section seeks to provide an overview of the system as a whole. The system is visualized as a model hierarchy in figure \ref{fig:mhier} and is an adaptation of the Object Management Group\cite{omg} modeling architecture. Additional system details have been added to provide more information about the system flow - that is, where and when various programming-specific tasks take place.
 \begin{figure}
@@ -87,7 +70,7 @@ When performing the domain analysis we searched for the most popular online surv
 The structure of the meta-model shown in figure \ref{fig:mmod} is based on requirements listed previously and as such attempts to capture the structure of the investigated surveys. 
 \begin{figure}
 \centering
-\includegraphics[height=6.2cm]{metamodel}
+% \includegraphics[height=6.2cm]{metamodel}
 \caption{A figure depicting the metamodel of the DSL.}
 \label{fig:mmod}
 \end{figure}
@@ -127,16 +110,30 @@ A *.survey file contains one or more question-segments. A segment defines the ty
 Thus, many of the keywords are names of concepts used in the survey domain. The colon is commonly known to explain or define the preceeding element - here it is used to indicate the start of the definition and contents of a question. The main intention with the concrete syntax design is that only minor knowledge about surveys is enough to be able to use the DSL with ease. 
 
 \section{Architecture of the language implementation}
-Internal\/External DSL? Interpreted? Generating code? Use of
-model-to-model transformations?
-Reuse between different back-ends? Coupling between back-ends and
-between the front-end and the back-ends?
-Toolchain elements? What tools do you provide? What tools one could
-provide as an extension?
-Cogen argument about advantages of your architecture, maintainability,
-development cost.
-Are the requirements met?
-How did you test the implementation?
+
+We have chosen to model our language as an external DSL such that it can be independent of any other language. Our DSL does not require any functionality such as expression evaluation that may easily be handed down in an internal DSL. Therefore we have chosen to implement it as an external DSL. 
+
+The first part of our system is an Android app which can be used to answer surveys. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android app. This would on the other hand make the app slower on the computationally constrained hardware Android runs within. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.\\
+
+INSERT TEXT ABOUT THE WEB APP HERE!\\
+
+The survey DSL itself is implemented using Xtext, an Open Source framework for development of programming languages and DSL's. Xtext is highly integrated with the code editor environment Eclipse. When developing a language using Xtext it is possible to generate Eclipse plugins automatically syntax highlight, lint and build files written. By using Xtext for our DSL we gain these capabilities with only little effort. 
+% External DSL. Generating code. Model to text transformations
+% Use of editor tools through Eclipse.
+% Xtext and xtend.
+
+% Testing
+
+% Internal\/External DSL? Interpreted? Generating code? Use of
+% model-to-model transformations?
+% Reuse between different back-ends? Coupling between back-ends and
+% between the front-end and the back-ends?
+% Toolchain elements? What tools do you provide? What tools one could
+% provide as an extension?
+% Cogen argument about advantages of your architecture, maintainability,
+% development cost.
+% Are the requirements met?
+% How did you test the implementation?
 
 \begin{thebibliography}{4}
 
