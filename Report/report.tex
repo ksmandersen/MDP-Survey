@@ -43,7 +43,7 @@
 % their surnames. This ensures that the names appear correctly in
 % the running heads and the author index.
 %
-\author{Jacob Romme Rasmussen \and \\ Kristian Støving Mørk Andersen \and \\ Athanasios Kastanidis}
+\author{Jacob Romme Rasmussen \and \\ Kristian Stï¿½ving Mï¿½rk Andersen \and \\ Athanasios Kastanidis}
 %
 \authorrunning{Model-Driven Development Project}
 % (feature abused for this document to repeat the title also on left hand pages)
@@ -64,6 +64,7 @@
 
 
 \begin{abstract}
+Adding test line.
 The abstract should summarize the contents of the paper and should
 contain at least 70 and at most 150 words. It should be written using the
 \emph{abstract} environment.
@@ -210,6 +211,30 @@ end.
 \noindent
 {\small (Example from Jensen K., Wirth N. (1991) Pascal user manual and
 report. Springer, New York)}
+
+\subsection {HTML Implementation}
+
+ HTML output pipeline:
+Convert Syntax tree to objects using an HTMLFactory.
+HTMLFactory receives the DSL as input and creates objects which know how to combine the data from the tree
+and the appropriate html tags  (fuses data with presentation).
+Once all the data are prepared the HTMLGenerator produces the static header, replacing the "global"
+information (page title, url links etc) and then starts appending to a string builder the objects from HTMLFactory.
+Each of these objects knows how to convert itself into an html read-able format  via EncodeToHTMLString() 
+while the HTMLEncoder knows how to embed different objects together  (for example opening and closing <div> </div>
+tags for each element).
+
+ HTML verifier:
+Once the html file is produced, collective from the HTMLFactory are passed down to the HTMLVerifierTest.
+The verifier then opens the target file and tries to verify that:
+\begin{verbatim}
+A. the file exists
+B. the correct <title> title is given
+C. the correct number of questions can be found
+D. the correct <form> controls exist
+E. the e-mail address of the <form>, towards which the information is send is correct
+\end{verbatim}
+ 
 
 \subsection{Citations}
 
