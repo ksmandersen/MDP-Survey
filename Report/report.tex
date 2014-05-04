@@ -23,7 +23,7 @@
 % a short form should be given in case it is too long for the running head
 \titlerunning{Model-Driven Development Project}
 
-\author{Jacob Romme Rasmussen \and \\ Kristian St�ving M�rk Andersen \and \\ Athanasios Kastanidis}
+\author{Jacob Romme Rasmussen \and \\ Kristian Støving Mørk Andersen \and \\ Athanasios Kastanidis}
 %
 \authorrunning{Model-Driven Development Project}
 
@@ -36,13 +36,6 @@
 
 \begin{abstract}
 This paper covers the process of modelling and structuring an external domain-specific language with the sole purpose of writing surveys. The language comes with its own editor and compiler. Code is automatically generated from the constructed surveys and targets multiple platforms, namely the Android mobile platform and a web platform. 
-\keywords{Model-driven development, Meta-model, DSL, Code generation, Android, HTML}
-Adding test line.
-The abstract should summarize the contents of the paper and should
-contain at least 70 and at most 150 words. It should be written using the
-\emph{abstract} environment.
-\keywords{We would like to encourage you to list your keywords within
-the abstract section}
 \end{abstract}
 
 \section{Introduction}
@@ -76,7 +69,7 @@ When performing the domain analysis we searched for the most popular online surv
 The structure of the meta-model shown in figure \ref{fig:mmod} is based on requirements listed previously and as such attempts to capture the structure of the investigated surveys. 
 \begin{figure}
 \centering
-% \includegraphics[height=6.2cm]{metamodel}
+ \includegraphics[height=6.2cm]{metamodel}
 \caption{A figure depicting the metamodel of the DSL.}
 \label{fig:mmod}
 \end{figure}
@@ -166,6 +159,36 @@ The survey DSL itself is implemented using Xtext, an Open Source framework for d
 % development cost.
 % Are the requirements met?
 % How did you test the implementation?
+\section{Testing}
+\subsection{The Meta-model}
+The meta-model has been tested manually by creating dynamic instances of the model. A dynamic instance is given in the XMI-format similar to XML. We attempted to create both valid and invalid instances to check if the model can satisfy the requirements. This procedure helped us catching errors earlier in the process.
+\subsection{The Concrete Syntax}
+Initially the concrete syntax was only tested by manually writing survey instances in the Eclipse editor. This was done to check that the syntax highlighting, type checking and model structure was correctly preserved and interpreted by the compiler. A few more testing procedures have been added to contribute to the stability of the system.
+\subsubsection{Constraints}
+Constraints are checked automatically on a concrete instance of our language before any code is generated. The constraints are included in the validation-package of the DSL project and checked in the generation package of the DSL project. The constraints guard against
+\begin{itemize}
+\item \emph{circularity}: no question contains one of their own answers in the list of required previous answers.
+\item \emph{empty strings}: no question or answer has an empty description.
+\end{itemize}
+Code is only generated when all constraints are satisfied. If that is not the case, a message is printed to the console informing the user about the constraint violation(s).
+\subsubsection{Unit Tests}
+Unit tests are included in the auto-generated test project belonging to the DSL. These are written in Xtend and uses the jUnit framework. Two *.survey test instances are included in the test project and used in the tests. Given a *.survey file, the tests parses the files and check that the entities are correctly structured and contain the expected information. 
+\subsection{The Code Generation}
+The testing of the code generation is purely manual. The general procedure was to generate the files and see if they could be used as intended. A brief description of the procedures is provided below.
+\subsubsection{Android Application}
+The generated code for the Android application has been manually tested by exporting the generated files, namely the manifest file, the activity file and the strings-file, into a new empty Android code project. The project is built and run on an emulator and on a Samsung Galaxy \textbf{??}. We simulated a surveyee by answering the questions and checking the validity of each question- and answer description before clicking submit.
+\subsubsection{Web application}
+HTML web application test description goes here.
+
+\section{Conclusion}
+Our conclusion. The end.
+\subsection{Future Improvements}
+Below is a list of future system improvements:
+\begin{itemize}
+\item Expand the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression.
+\item Expand the meta-model to include more details about the system e.g. a survey title or an introductory survey description.
+\item Test the quality of the generated files automatically.
+\end{itemize}
 
 \begin{thebibliography}{4}
 
@@ -175,6 +198,8 @@ The survey DSL itself is implemented using Xtext, an Open Source framework for d
 \bibitem{surveymonkey}SurveyMonkey, \url{http://www.surveymonkey.com/s/Public-School-Survey-Template}
 
 \bibitem{obsurvey}Obsurvey, \url{http://www.obsurvey.com/language-proficiency-template/}
+
+\bibitem{omg} Object Management Group, \url{http://www.omg.org/}.
 
 \end{thebibliography}
 
