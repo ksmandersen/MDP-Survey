@@ -3,7 +3,18 @@
  */
 package smdp.project.survey.validation;
 
+import java.util.Arrays;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import smdp.project.survey.validation.AbstractSurveyDSLValidator;
+import survey.Answer;
+import survey.MultipleChoice;
+import survey.OpenAnswer;
+import survey.OpenQuestion;
+import survey.RadioChoice;
 
 /**
  * Custom validation rules.
@@ -12,4 +23,112 @@ import smdp.project.survey.validation.AbstractSurveyDSLValidator;
  */
 @SuppressWarnings("all")
 public class SurveyDSLValidator extends AbstractSurveyDSLValidator {
+  @Check
+  protected static boolean _constraint(final MultipleChoice choice) {
+    boolean _and = false;
+    String _description = choice.getDescription();
+    String _trim = _description.trim();
+    boolean _equals = _trim.equals("");
+    boolean _not = (!_equals);
+    if (!_not) {
+      _and = false;
+    } else {
+      EList<Answer> _answers = choice.getAnswers();
+      final Function1<Answer,Boolean> _function = new Function1<Answer,Boolean>() {
+        public Boolean apply(final Answer it) {
+          boolean _and = false;
+          EList<Answer> _requiredPreviousAnswers = choice.getRequiredPreviousAnswers();
+          boolean _contains = _requiredPreviousAnswers.contains(it);
+          boolean _not = (!_contains);
+          if (!_not) {
+            _and = false;
+          } else {
+            String _description = it.getDescription();
+            String _trim = _description.trim();
+            boolean _equals = _trim.equals("");
+            boolean _not_1 = (!_equals);
+            _and = (_not && _not_1);
+          }
+          return Boolean.valueOf(_and);
+        }
+      };
+      boolean _forall = IterableExtensions.<Answer>forall(_answers, _function);
+      _and = (_not && _forall);
+    }
+    return _and;
+  }
+  
+  @Check
+  protected static boolean _constraint(final RadioChoice choice) {
+    boolean _and = false;
+    String _description = choice.getDescription();
+    String _trim = _description.trim();
+    boolean _equals = _trim.equals("");
+    boolean _not = (!_equals);
+    if (!_not) {
+      _and = false;
+    } else {
+      EList<Answer> _answers = choice.getAnswers();
+      final Function1<Answer,Boolean> _function = new Function1<Answer,Boolean>() {
+        public Boolean apply(final Answer it) {
+          boolean _and = false;
+          EList<Answer> _requiredPreviousAnswers = choice.getRequiredPreviousAnswers();
+          boolean _contains = _requiredPreviousAnswers.contains(it);
+          boolean _not = (!_contains);
+          if (!_not) {
+            _and = false;
+          } else {
+            String _description = it.getDescription();
+            String _trim = _description.trim();
+            boolean _equals = _trim.equals("");
+            boolean _not_1 = (!_equals);
+            _and = (_not && _not_1);
+          }
+          return Boolean.valueOf(_and);
+        }
+      };
+      boolean _forall = IterableExtensions.<Answer>forall(_answers, _function);
+      _and = (_not && _forall);
+    }
+    return _and;
+  }
+  
+  @Check
+  protected static boolean _constraint(final OpenQuestion choice) {
+    boolean _and = false;
+    String _description = choice.getDescription();
+    String _trim = _description.trim();
+    boolean _equals = _trim.equals("");
+    boolean _not = (!_equals);
+    if (!_not) {
+      _and = false;
+    } else {
+      EList<Answer> _requiredPreviousAnswers = choice.getRequiredPreviousAnswers();
+      OpenAnswer _openAnswer = choice.getOpenAnswer();
+      boolean _contains = _requiredPreviousAnswers.contains(_openAnswer);
+      boolean _not_1 = (!_contains);
+      _and = (_not && _not_1);
+    }
+    return _and;
+  }
+  
+  @Check
+  protected static boolean _constraint(final EObject it) {
+    return true;
+  }
+  
+  public static boolean constraint(final EObject choice) {
+    if (choice instanceof MultipleChoice) {
+      return _constraint((MultipleChoice)choice);
+    } else if (choice instanceof OpenQuestion) {
+      return _constraint((OpenQuestion)choice);
+    } else if (choice instanceof RadioChoice) {
+      return _constraint((RadioChoice)choice);
+    } else if (choice != null) {
+      return _constraint(choice);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(choice).toString());
+    }
+  }
 }

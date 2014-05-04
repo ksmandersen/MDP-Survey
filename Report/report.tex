@@ -1,31 +1,17 @@
 
-%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% This is the LaTeX source for the instructions to authors using
-% the LaTeX document class 'llncs.cls' for contributions to
-% the Lecture Notes in Computer Sciences series.
-% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
-%
-% It may be used as a template for your own input - copy it
-% to a new file with a new name and use it as the basis
-% for your article.
-%
-% NB: the document class 'llncs' has its own and detailed documentation, see
-% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \documentclass[runningheads]{llncs}
 
 \usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
 \setcounter{tocdepth}{3}
 \usepackage{graphicx}
 
 \usepackage{url}
-\urldef{\mailsa}\path|{jrra,ksma,atha}@itu.dk|
+\urldef{\mailsa}\path|{jrra,ksma,atka}@itu.dk|
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
+\graphicspath{{images/}}
 
 \begin{document}
 
@@ -37,26 +23,11 @@
 % a short form should be given in case it is too long for the running head
 \titlerunning{Model-Driven Development Project}
 
-% the name(s) of the author(s) follow(s) next
-%
-% NB: Chinese authors should write their first names(s) in front of
-% their surnames. This ensures that the names appear correctly in
-% the running heads and the author index.
-%
 \author{Jacob Romme Rasmussen \and \\ Kristian St�ving M�rk Andersen \and \\ Athanasios Kastanidis}
 %
 \authorrunning{Model-Driven Development Project}
-% (feature abused for this document to repeat the title also on left hand pages)
 
-% the affiliations are given next; don't give your e-mail address
-% unless you accept that it will be published
 \institute{\mailsa\\}
-%
-% NB: a more complex sample for affiliations and the mapping to the
-% corresponding authors can be found in the file "llncs.dem"
-% (search for the string "\mainmatter" where a contribution starts).
-% "llncs.dem" accompanies the document class "llncs.cls".
-%
 
 \toctitle{Lecture Notes in Computer Science}
 \tocauthor{Authors' Instructions}
@@ -64,6 +35,8 @@
 
 
 \begin{abstract}
+This paper covers the process of modelling and structuring an external domain-specific language with the sole purpose of writing surveys. The language comes with its own editor and compiler. Code is automatically generated from the constructed surveys and targets multiple platforms, namely the Android mobile platform and a web platform. 
+\keywords{Model-driven development, Meta-model, DSL, Code generation, Android, HTML}
 Adding test line.
 The abstract should summarize the contents of the paper and should
 contain at least 70 and at most 150 words. It should be written using the
@@ -72,145 +45,75 @@ contain at least 70 and at most 150 words. It should be written using the
 the abstract section}
 \end{abstract}
 
-
 \section{Introduction}
 
-What is the purpose of this project?
-Objectives? Goals? What do you want to achieve?
-What are the benefits(and disadvantages\/cost) of using a domain
-specific language for this task?
-What are the requirements for your DSL? Who is the target user?
-How much you have managed to achieve?
+This paper describes the design and implementation of a Domain Specific Language (DSL) for generating survey applications. The purpose of the project is to design a language that can be used by a non-programmer to define surveys. These surveys can then be used to generate applications for answering surveys on multiple platforms. This reduces the amount of code duplication a programmer would generally encounter while writing a survey application for multiple platforms. In turn this also reduces the time development takes. Most importantly the survey DSL along with the code generation tool can be used to generate and endless number of survey applications without rewriting any code.
 
-\subsection{A subsection}
-\label{sub:testsub}
-Text in a subsection.
-
-\subsubsection{A subsubsection}
-My parent section is section \ref{sub:testsub}.
+\section{System Overview}
+This section seeks to provide an overview of the system as a whole. The system is visualized as a model hierarchy in figure \ref{fig:mhier} and is an adaptation of the Object Management Group\cite{omg} modeling architecture. Additional system details have been added to provide more information about the system flow - that is, where and when various programming-specific tasks take place.
+\begin{figure}
+\centering
+\includegraphics[height=6.2cm]{modelhierarchy}
+\caption{A figure depicting the model hierarchy of the system. The m-levels are a notation adopted by the Object Management Group\cite{omg} modeling architecture.}
+\label{fig:mhier}
+\end{figure}
+The Ecore language is placed at the top level of the system which makes it possible to construct a meta-model of our language. Together with the abstract syntax, the structure and relations of the meta-model is passed to the concrete syntax at level m1. At this level, a language-specific file (*.survey) is the center of attention. Constraints are checked against this file and code is generated from this file. The real survey is placed on the bottom level and can take on different forms. In our case, we are concerned with files that provide the core of an Android application and a web application.
 
 \section{Language Design}
-Domain analysis and the meta-model
-Concrete-syntax (interesting aspects of the grammar)
-How and what design principles you followed? (cite literature)
-
-\section{Architecture of the language implementation}
-Internal\/External DSL? Interpreted? Generating code? Use of
-model-to-model transformations?
-Reuse between different back-ends? Coupling between back-ends and
-between the front-end and the back-ends?
-Toolchain elements? What tools do you provide? What tools one could
-provide as an extension?
-Cogen argument about advantages of your architecture, maintainability,
-development cost.
-Are the requirements met?
-How did you test the implementation?
-
-\subsection{Examples: Figures}
-
-For \LaTeX\ users, we recommend using the \emph{graphics} or \emph{graphicx}
-package and the \verb+\includegraphics+ command.
-
-Please check that the lines in line drawings are not
-interrupted and are of a constant width. Grids and details within the
-figures must be clearly legible and may not be written one on top of
-the other. Line drawings should have a resolution of at least 800 dpi
-(preferably 1200 dpi). The lettering in figures should have a height of
-2~mm (10-point type). Figures should be numbered and should have a
-caption which should always be positioned \emph{under} the figures, in
-contrast to the caption belonging to a table, which should always appear
-\emph{above} the table; this is simply achieved as matter of sequence in
-your source.
-
-Please center the figures or your tabular material by using the \verb+\centering+
-declaration. Short captions are centered by default between the margins
-and typeset in 9-point type (Fig.~\ref{fig:example} shows an example).
-The distance between text and figure is preset to be about 8~mm, the
-distance between figure and caption about 6~mm.
-
-To ensure that the reproduction of your illustrations is of a reasonable
-quality, we advise against the use of shading. The contrast should be as
-pronounced as possible.
-
-If screenshots are necessary, please make sure that you are happy with
-the print quality before you send the files.
-
-Please define figures (and tables) as floating objects. Please avoid
-using optional location parameters like ``\verb+[h]+" for ``here".
-
-\paragraph{Remark 1.}
-
-In the printed volumes, illustrations are generally black and white
-(halftones), and only in exceptional cases, and if the author is
-prepared to cover the extra cost for color reproduction, are colored
-pictures accepted. Colored pictures are welcome in the electronic
-version free of charge. If you send colored figures that are to be
-printed in black and white, please make sure that they really are
-legible in black and white. Some colors as well as the contrast of
-converted colors show up very poorly when printed in black and white.
-
-\subsection{Formulas}
-
-Displayed equations or formulas are centered and set on a separate
-line (with an extra line or halfline space above and below). Displayed
-expressions should be numbered for reference. The numbers should be
-consecutive within each section or within the contribution,
-with numbers enclosed in parentheses and set on the right margin --
-which is the default if you use the \emph{equation} environment, e.g.,
-\begin{equation}
-  \psi (u) = \int_{o}^{T} \left[\frac{1}{2}
-  \left(\Lambda_{o}^{-1} u,u\right) + N^{\ast} (-u)\right] dt \;  .
-\end{equation}
-
-Equations should be punctuated in the same way as ordinary
-text but with a small space before the end punctuation mark.
-
-\subsection{Footnotes}
-
-The superscript numeral used to refer to a footnote appears in the text
-either directly after the word to be discussed or -- in relation to a
-phrase or a sentence -- following the punctuation sign (comma,
-semicolon, or period). Footnotes should appear at the bottom of
-the
-normal text area, with a line of about 2~cm set
-immediately above them.\footnote{The footnote numeral is set flush left
-and the text follows with the usual word spacing.}
-
-\subsection{Program Code}
-
-Program listings or program commands in the text are normally set in
-typewriter font, e.g., CMTT10 or Courier.
-
+%Domain analysis and the meta-model
+%Concrete-syntax (interesting aspects of the grammar)
+%How and what design principles you followed? (cite literature) \\
+When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey\cite{surveymonkey} and Obsurvey\cite{obsurvey} as inspiration. The language is specifically designed to support their survey design. The surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to type free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. A question can depend on previous answers meaning it is only shown if a certain answer was chosen earlier. This is useful when some answers make the following questions irrelevant. The combined functionality of the investigated surveys lead to the following requirements for the survey system:
+\begin{itemize}
+\item  A survey must contain at least one question. 
+\item A question has a type indicating the amount and types of answers allowed. 
+\item A question can require specific previous answers and should only be made available if all the required answers were chosen by the user. 
+\item Multiple choice questions allow users to choose multiple predefined answers.
+\item RadioChoice questions should only allow a single answer. 
+\item Open questions do not contain any predefined answers but allow a user to define the answer themselves. 
+\item An open question must contain a single open(not predefined) answer.
+\end{itemize}
+The structure of the meta-model shown in figure \ref{fig:mmod} is based on requirements listed previously and as such attempts to capture the structure of the investigated surveys. 
+\begin{figure}
+\centering
+% \includegraphics[height=6.2cm]{metamodel}
+\caption{A figure depicting the metamodel of the DSL.}
+\label{fig:mmod}
+\end{figure}
+The Survey root element contains one or more questions. The question entity is split into three subentities denoting the type of question. An alternative approach would be to merge the MultipleChoice and RadioChoice entities and use an enumeration to describe a question type attribute. However, we argue that it is visually more pleasing to have the distinct separation displayed in the model. A question contains one or more references to answers denoting the relevancy of the question. A constraint is run on the model checking that no question requires one of its own answers. The model provides the basis for the abstract syntax of the domain-specific language, which is used to write a survey in concrete syntax. During the design phase of the language we chose to follow a set of guidelines by Karsai, G., et al.\cite{karsai}. The main guidelines being 
+\begin{quotation}
+\emph{Keep it simple.} [...] \emph{Avoid unnecessary generality.}
+\end{quotation}
+This is reflected in the model which contains a minimum number of entities, and the concrete syntax which only contains the neccessary components to satisfy the requirements.
 \medskip
 
 \noindent
-{\it Example of a Computer Program}
+{\it Example of the concrete syntax in a *.survey-file is shown below}
 \begin{verbatim}
-program Inflation (Output)
-  {Assuming annual inflation rates of 7%, 8%, and 10%,...
-   years};
-   const
-     MaxYears = 10;
-   var
-     Year: 0..MaxYears;
-     Factor1, Factor2, Factor3: Real;
-   begin
-     Year := 0;
-     Factor1 := 1.0; Factor2 := 1.0; Factor3 := 1.0;
-     WriteLn('Year  7% 8% 10%'); WriteLn;
-     repeat
-       Year := Year + 1;
-       Factor1 := Factor1 * 1.07;
-       Factor2 := Factor2 * 1.08;
-       Factor3 := Factor3 * 1.10;
-       WriteLn(Year:5,Factor1:7:3,Factor2:7:3,Factor3:7:3)
-     until Year = MaxYears
-end.
+multiple:
+	"What is your favourite pet?"
+	answer dogAnswer "Dogs"
+	text otherAnswer "Something else?"
+
+single:
+	"Which is better - Coffee or tea?"
+	optional
+	requires dogAnswer
+	answer teaAnswer "Tea"
+	answer coffeeAnswer "Coffee" 
+
+open:
+	"Describe how you feel about Windows XP."
+	optional
+	text xpAnswer
 \end{verbatim}
 %
 \noindent
-{\small (Example from Jensen K., Wirth N. (1991) Pascal user manual and
-report. Springer, New York)}
+A *.survey file contains one or more question-segments. A segment defines the type of the question followed by a surveyor-defined description - the actual question to be read by the surveyee. The optional-keyword is used to indicate if the question in the given segment is optional. The remainder of the segment contains a list of answers starting with the answer-keyword, followed by an identifier and a description (the actual predefined answer). The identifier is only used internally when referencing the answer from somewhere else in the file. The referencing of answers is used when \emph{requiring} that certain answers have been chosen by the surveyee in order for the question to be relevant. The naming of the keywords are chosen specifically to capture the essence of their functionality and be easily understandable by anyone with no prior programming experience or the like. When designing the concrete syntax of a domain-specific language, Karsai, G., et al.\cite{karsai} recommends that one should
+\begin{quotation}
+ \emph{Adopt existing notations domain experts use.}
+\end{quotation}
+Thus, many of the keywords are names of concepts used in the survey domain. The colon is commonly known to explain or define the preceeding element - here it is used to indicate the start of the definition and contents of a question. The main intention with the concrete syntax design is that only minor knowledge about surveys is enough to be able to use the DSL with ease. 
 
 \subsection {HTML Implementation}
 
@@ -237,94 +140,42 @@ E. the e-mail address of the <form>, towards which the information is send is co
  
 
 \subsection{Citations}
+\section{Architecture of the language implementation}
+\subsection{Citations}
+We have chosen to model our language as an external DSL such that it can be independent of any other language. Our DSL does not require any functionality such as expression evaluation that may easily be handed down in an internal DSL. Therefore we have chosen to implement it as an external DSL. 
 
-For citations in the text please use
-square brackets and consecutive numbers: \cite{jour}, \cite{lncschap},
-\cite{proceeding1} -- provided automatically
-by \LaTeX 's \verb|\cite| \dots\verb|\bibitem| mechanism.
+The first part of our system is an Android app which can be used to answer surveys. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android app. This would on the other hand make the app slower on the computationally constrained hardware Android runs within. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.\\
 
-\subsection{Page Numbering and Running Heads}
+INSERT TEXT ABOUT THE WEB APP HERE!\\
 
-There is no need to include page numbers. If your paper title is too
-long to serve as a running head, it will be shortened. Your suggestion
-as to how to shorten it would be most welcome.
+The survey DSL itself is implemented using Xtext, an Open Source framework for development of programming languages and DSL's. Xtext is highly integrated with the code editor environment Eclipse. When developing a language using Xtext it is possible to generate Eclipse plugins automatically syntax highlight, lint and build files written. By using Xtext for our DSL we gain these capabilities with only little effort. Xtext also lays out the groundwork for generating code in Xtend, a statically typed language sitting atop of Java.
 
-\section{Example: BibTeX Entries}
+% External DSL. Generating code. Model to text transformations
+% Use of editor tools through Eclipse.
+% Xtext and xtend.
 
-The correct BibTeX entries for the Lecture Notes in Computer Science
-volumes can be found at the following Website shortly after the
-publication of the book:
-\url{http://www.informatik.uni-trier.de/~ley/db/journals/lncs.html}
+% Testing
 
-\subsubsection*{Acknowledgments.} The heading should be treated as a
-subsubsection heading and should not be assigned a number.
-
-\section{Example: The References Section}\label{references}
-
-In order to permit cross referencing within LNCS-Online, and eventually
-between different publishers and their online databases, LNCS will,
-from now on, be standardizing the format of the references. This new
-feature will increase the visibility of publications and facilitate
-academic research considerably. Please base your references on the
-examples below. References that don't adhere to this style will be
-reformatted by Springer. You should therefore check your references
-thoroughly when you receive the final pdf of your paper.
-The reference section must be complete. You may not omit references.
-Instructions as to where to find a fuller version of the references are
-not permissible.
-
-We only accept references written using the latin alphabet. If the title 
-of the book you are referring to is in Russian or Chinese, then please write 
-(in Russian) or (in Chinese) at the end of the transcript or translation 
-of the title.
-
-The following section shows a sample reference list with entries for
-journal articles \cite{jour}, an LNCS chapter \cite{lncschap}, a book
-\cite{book}, proceedings without editors \cite{proceeding1} and
-\cite{proceeding2}, as well as a URL \cite{url}.
-Please note that proceedings published in LNCS are not cited with their
-full titles, but with their acronyms!
+% Internal\/External DSL? Interpreted? Generating code? Use of
+% model-to-model transformations?
+% Reuse between different back-ends? Coupling between back-ends and
+% between the front-end and the back-ends?
+% Toolchain elements? What tools do you provide? What tools one could
+% provide as an extension?
+% Cogen argument about advantages of your architecture, maintainability,
+% development cost.
+% Are the requirements met?
+% How did you test the implementation?
 
 \begin{thebibliography}{4}
 
-\bibitem{jour} Smith, T.F., Waterman, M.S.: Identification of Common Molecular
-Subsequences. J. Mol. Biol. 147, 195--197 (1981)
+\bibitem{karsai} Karsai, G., Krahn, H., Pinkernell, C.,, Rumpe, B., Schindler, M., Völkel, S.: Design guidelines for domain specific languages. 
+9th OOPSLA Workshop on Domain-Specific Modeling (2009), \url{http://www.dsmforum.org/events/dsm09/Papers/Karsai.pdf}
 
-\bibitem{lncschap} May, P., Ehrlich, H.C., Steinke, T.: ZIB Structure Prediction Pipeline:
-Composing a Complex Biological Workflow through Web Services. In: Nagel,
-W.E., Walter, W.V., Lehner, W. (eds.) Euro-Par 2006. LNCS, vol. 4128,
-pp. 1148--1158. Springer, Heidelberg (2006)
+\bibitem{surveymonkey}SurveyMonkey, \url{http://www.surveymonkey.com/s/Public-School-Survey-Template}
 
-\bibitem{book} Foster, I., Kesselman, C.: The Grid: Blueprint for a New Computing
-Infrastructure. Morgan Kaufmann, San Francisco (1999)
-
-\bibitem{proceeding1} Czajkowski, K., Fitzgerald, S., Foster, I., Kesselman, C.: Grid
-Information Services for Distributed Resource Sharing. In: 10th IEEE
-International Symposium on High Performance Distributed Computing, pp.
-181--184. IEEE Press, New York (2001)
-
-\bibitem{proceeding2} Foster, I., Kesselman, C., Nick, J., Tuecke, S.: The Physiology of the
-Grid: an Open Grid Services Architecture for Distributed Systems
-Integration. Technical report, Global Grid Forum (2002)
-
-\bibitem{url} National Center for Biotechnology Information, \url{http://www.ncbi.nlm.nih.gov}
+\bibitem{obsurvey}Obsurvey, \url{http://www.obsurvey.com/language-proficiency-template/}
 
 \end{thebibliography}
 
-\section{Example: Itemized list}
-Here is a checklist of everything the volume editor requires from you:
-
-
-\begin{itemize}
-\settowidth{\leftmargin}{{\Large$\square$}}\advance\leftmargin\labelsep
-\itemsep8pt\relax
-\renewcommand\labelitemi{{\lower1.5pt\hbox{\Large$\square$}}}
-
-\item The final \LaTeX{} source files
-\item A final PDF file
-\item A copyright form, signed by one author on behalf of all of the
-authors of the paper.
-\item A readme giving the name and email address of the
-corresponding author.
-\end{itemize}
 \end{document}

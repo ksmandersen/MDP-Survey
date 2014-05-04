@@ -33,6 +33,8 @@ tmp/
 local.properties
 .settings/
 .loadpath
-Report/report.pdf
-Report/report.aux
-Report/report.log
+*.pdf
+*.aux
+*.log
+*.synctex.gz
+*.fdb_latexmk
