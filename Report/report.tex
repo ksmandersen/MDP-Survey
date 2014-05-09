@@ -35,12 +35,16 @@
 
 
 \begin{abstract}
-This paper covers the process of modelling and structuring a domain-specific language for writing surveys. The language comes with its own editor and compiler. Code is automatically generated from the constructed surveys and targets multiple platforms, namely the Android mobile platform and a web platform. 
+This paper covers the process of modelling and structuring a domain-specific language (DSL). By being smaller and easier to understand than a general-purpose programming language, a DSL makes it possible for a larger amount of people to write programs in the domain. This paper focuses on the survey domain. Having performed a domain analysis, we present a survey-specific language including its own editor and compiler. Code is automatically generated from the surveys written in the DSL and targets multiple platforms, namely the Android mobile platform and a web platform. 
 \end{abstract}
 
 \section{Introduction}
+This paper describes the design and implementation of a Domain Specific Language for generating survey applications. The purpose of the project is to design a language that can be used by a person with no prior programming experience to define surveys. Within the domain, a DSL is substantially easier to use and understand compared to general-purpose programming languages\cite{mernik}. By exposing the DSL to people who understand the domain, you allow for better communication between the programmer, who writes the code for the DSL, and the customer, that is - the domain expert\cite{fowler}. 
+
+The surveys defined in the DSL can then be used to generate applications for answering surveys on multiple platforms. This reduces the amount of code duplication a programmer would generally encounter while writing a survey application for multiple platforms. In turn this also reduces the time development takes. Most importantly the survey DSL along with the code generation tool can be used to generate and endless number of survey applications without rewriting any code. 
 %Stefan: Briefly mention how we did it.
-This paper describes the design and implementation of a Domain Specific Language (DSL) for generating survey applications. The purpose of the project is to design a language that can be used by a person with no prior programming experience to define surveys. These surveys can then be used to generate applications for answering surveys on multiple platforms. This reduces the amount of code duplication a programmer would generally encounter while writing a survey application for multiple platforms. In turn this also reduces the time development takes. Most importantly the survey DSL along with the code generation tool can be used to generate and endless number of survey applications without rewriting any code.
+
+The first step towards designing a DSL is to perform the domain analysis. The analysis provides the neccessary information to model and design the language. Code can be generated from a program written in the DSL by using the dynamic survey-specific information contained in the program and inserting it into several static templates. After writing a valid survey, the generated code is immediately accesible to the user. 
 
 \section{System Overview}
 The flow of the system is visualized in Fig. \ref{fig:flow} showing where and when various programming-specific tasks take place.
@@ -50,7 +54,9 @@ The flow of the system is visualized in Fig. \ref{fig:flow} showing where and wh
 \caption{A figure depicting the flow of the system.}
 \label{fig:flow}
 \end{figure}
-The meta-model of our language written in the Ecore language is where the structure and relations of the system are defined. Together with the abstract syntax, the structure and relations of the meta-model are passed to the concrete syntax. At this point, a language-specific file (*.survey) is the center of attention. Constraints are checked against this file and code is generated from this file if the constraints are satisfied. The real survey is endpoint of the system flow and can take on different forms. In our case, a real survey consists of files that provide the core of an Android application and a web application. From a target user's viewpoint, he writes his survey in the editor built in Eclipse following the survey program syntax. If no constraints are violated, code is generated from his survey when he saves the program. In the case of an Android application, he has to create a new Android project and add the generated files. The application should be ready for deployment on an Android phone. In the case of a Web application he has to move the generate files to his webserver and they should be ready for use.
+The meta-model of our language written in the Ecore language is where the structure and relations of the system are defined. Together with the abstract syntax, the structure and relations of the meta-model are passed to the concrete syntax. At this point, a language-specific file (*.survey) is the center of attention. Constraints are checked against this file and code is generated from this file if the constraints are satisfied. The actual survey is the endpoint of the system flow and can take on different forms. In our case, a real survey consists of files that provide the core of an Android application and a web application. 
+
+From a target user's viewpoint, he writes his survey in the editor built in Eclipse following the survey program syntax. If no constraints are violated, code is generated from his survey when he saves the program. If he wants to put the generated Android application code to use, he has to create a new Android project and add the generated files. The application should be ready for deployment on an Android phone. In the case of a Web application he has to move the generate files to his webserver and they should be ready for use.
 
 \section{Language Requirements and Design}
 %Domain analysis and the meta-model
@@ -180,6 +186,10 @@ In order to further improve the functionality of the system we could have expand
 Our conclusion. The end.
 
 \begin{thebibliography}{4}
+
+\bibitem{mernik} Mernik, M., Heering, J., Sloane, A. M.: When and how to develop domain-specific languages. ACM Comput. Surv., 37(4):316–344, 2005.
+
+\bibitem{fowler}  Fowler, M., Parsons, R.: Domain-Specific Languages. Addison-Wesley, 2011.
 
 \bibitem{karsai} Karsai, G., Krahn, H., Pinkernell, C.,, Rumpe, B., Schindler, M., Völkel, S.: Design guidelines for domain specific languages. 
 9th OOPSLA Workshop on Domain-Specific Modeling (2009), \url{http://www.dsmforum.org/events/dsm09/Papers/Karsai.pdf}
