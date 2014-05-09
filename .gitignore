@@ -33,7 +33,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
-*.pdf
+/Report/*.pdf
 *.aux
 *.log
 *.synctex.gz
