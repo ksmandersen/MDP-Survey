@@ -25,7 +25,7 @@ class HTMLGenerator implements IGenerator {
 '''
 <html>
 <head>
- <title> Survey Templates </title> 
+ <title> Survey </title> 
  <style>
  	p { color:#ffd835 ; font:14pt Helvetica }
  	p:first-line { color: green; font-size: 200% }
@@ -62,17 +62,80 @@ class HTMLGenerator implements IGenerator {
 	
  </style>
  <script>
-
+function checkValue(form)
+{
+	ready = true;
+	
+	«/* Controlling code / Questions   */»
+	// «var questionsNo = 1»
+	// «var answersNo = 1»
+	«FOR mq : getQuestions»
+		«/* Multiple Choice */»
+		«IF(mq instanceof MultipleChoice)»
+			«IF(mq.isIsOptional)»
+				/* «answersNo = answersNo + (mq as MultipleChoice).answers.length» */
+			«ELSE»
+				if(ready && !(
+				«FOR ans : (mq as MultipleChoice).answers»		
+					«IF(ans instanceof OpenAnswer)»
+						/* «answersNo = answersNo + 1» */
+					«ELSE»
+						form[
+						«answersNo»
+						/* «answersNo = answersNo + 1» */
+						].checked ||
+					«ENDIF»
+					// «answersNo = answersNo + 1»
+				«ENDFOR»
+				true)  { alert('Please provide an answer for question
+				«questionsNo»
+				'); ready=false; }
+			«ENDIF»			
+		«/* Radio Choice */»
+		«ELSEIF(mq instanceof RadioChoice)»
+			«IF(mq.isIsOptional)»
+				/* «answersNo = answersNo + (mq as MultipleChoice).answers.length» */
+			«ELSE»
+				if(ready && !(
+				«FOR ans : (mq as RadioChoice).answers»		
+					«IF(ans instanceof OpenAnswer)»
+						/* «answersNo = answersNo + 1» */
+					«ELSE»
+						form[
+						«answersNo»
+						/* «answersNo = answersNo + 1» */
+						].checked ||
+					«ENDIF»
+					// «answersNo = answersNo + 1»
+				«ENDFOR»
+				true)  { alert('Please provide an answer for question
+				«questionsNo»
+				'); ready=false; }
+			«ENDIF»
+		«/* assume Open Question - answernumber=1 since there can only ever be one answer. */»
+		«ELSE»			
+		<tr> <td>
+		<textarea name="q«questionsNo»" id="q«questionsNo»_1" rows=4>Please enter your answer here... </textarea> </td> </tr>	
+		// «answersNo = answersNo + 1»		
+		«ENDIF»		
+		<!-- «questionsNo = questionsNo + 1 » -->
+		
+	«ENDFOR»
+	if(!ready)
+		return false;
+	accept = confirm('Are you sure you want to proceed?');
+	return accept;
+}
  </script>
 </head>
 <body>
-  <form name="input_form" action="MAILTO:group8survey@example.dk?Subject=SMDP%20Group%208%20survey%20answer" method="post" enctype="text/plain">
+  <form name="input_form" action="MAILTO:group8survey@example.dk?Subject=SMDP%20Group%208%20survey%20answer"  onsubmit="return checkValue(this) method="post" enctype="text/plain">
   <div class="titleDiv">
-	<h1> My Survey </h1> 
+	<h1> Survey </h1> 
   </div>
   <br>
 	«/* Main Body / Questions   */»
-	«var questionNo = 1»
+	<!-- «var questionNo = 1» -->
 	«FOR mq : getQuestions»
 		«/* Question Prologue */»
 		<div> <table> <tr><th>Question #«questionNo»: <br>
