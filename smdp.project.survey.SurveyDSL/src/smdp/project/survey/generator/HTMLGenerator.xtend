@@ -10,6 +10,8 @@ import survey.Survey
 import survey.MultipleChoice
 import smdp.project.survey.validation.SurveyDSLValidator
 import org.eclipse.emf.ecore.util.EcoreUtil
+import survey.RadioChoice
+import survey.OpenAnswer
 
 /**
  * Generates code from your model files on save.
@@ -76,34 +78,42 @@ class HTMLGenerator implements IGenerator {
 		<div> <table> <tr><th>Question #«questionNo»: <br>
 		«IF(mq.isIsOptional)»(optional)
 		«ELSE»(mandatory)«ENDIF»
-		«mq.name»</th></tr>
-		
-		«/* Main Body / Answers   */»
-		«FOR ans : answers»
-			«var answerNo = 1»
-			
+		«mq.description»</th></tr>		
+		«/* Main Body */»				
 			«/* Multiple Choice */»
 			«IF(mq instanceof MultipleChoice)»
-			<tr> <td><input name="q«questionNo»" id="q«questionNo»_«answerNo»" type="checkbox" value="op«questionNo»"> <label for="q«questionNo»_«answerNo»"> 
-			(«ans.name»); 
-			</label> </td> </tr>
-			
+				«FOR ans : (mq as MultipleChoice).answers»
+					«var answerNo = 1»
+					«IF(ans instanceof OpenAnswer)»
+						<tr> <td>
+						<textarea name="q«questionNo»" id="q«questionNo»_1" rows=4>«ans.description»</textarea> </td> </tr>	
+					«ELSE»
+					<tr> <td><input name="q«questionNo»" id="q«questionNo»_«answerNo»" type="checkbox" value="op«questionNo»"> <label for="q«questionNo»_«answerNo»"> 
+					«ans.description» 
+					</label> </td> </tr>
+					«ENDIF»
+					«answerNo = answerNo + 1»
+				«ENDFOR»			
 			«/* Radio Choice */»
 			«ELSEIF(mq instanceof RadioChoice)»
-			<tr> <td><input name="q«questionNo»" id="q«questionNo»_«answerNo»" type="radio" value="op«questionNo»"> <label for="q«questionNo»_«answerNo»"> 
-			(«ans.name»); 
-			</label> </td> </tr>
-			
-			«/* assume Open Question */»
-			«ELSE»
+				«FOR ans : (mq as RadioChoice).answers»
+					«var answerNo = 1»
+					«IF(ans instanceof OpenAnswer)»
+						<tr> <td>
+						<textarea name="q«questionNo»" id="q«questionNo»_1" rows=4>«ans.description»</textarea> </td> </tr>	
+					«ELSE»
+						<tr> <td><input name="q«questionNo»" id="q«questionNo»_«answerNo»" type="radio" value="op«questionNo»"> <label for="q«questionNo»_«answerNo»"> 
+						«ans.description» 
+						</label> </td> </tr>
+					«ENDIF»
+					<!-- «answerNo = answerNo + 1» -->
+				«ENDFOR»
+			«/* assume Open Question - answernumber=1 since there can only ever be one answer. */»
+			«ELSE»			
 			<tr> <td>
-			<textarea name="q«questionNo»" id="q«questionNo»_«answerNo»" rows=4> 
-			Please enter your answer here... </textarea> </td> </tr>
-			
-			«ENDIF»
-			«var answerNo = answerNo + 1»
-		«ENDFOR»
-		«questionNo = questionNo + 1 »
+			<textarea name="q«questionNo»" id="q«questionNo»_1" rows=4>Please enter your answer here... </textarea> </td> </tr>			
+			«ENDIF»		
+		<!-- «questionNo = questionNo + 1 » -->
 		
 		«/* Question Epilogue */»
 		 </table></div><br>
@@ -129,7 +139,7 @@ class HTMLGenerator implements IGenerator {
 				forEach [ Survey it |
 					val fname = "MainActivity"
 					// generate HTML implementation
-					fsa.generateFile("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname + ".html", it.generateHTMLActivity)
+					fsa.generateFile("app-gen/src/" + fname + ".html", it.generateHTMLActivity)
 				]
 		else println("Constraints violated. Either a question contains a reference to its own answer or a description string is empty.")
 	}
