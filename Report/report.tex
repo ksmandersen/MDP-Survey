@@ -99,9 +99,11 @@ It is in such a file that the target user writes their surveys. The file contain
 Thus, many of the keywords are names of concepts used in the survey domain. The colon is commonly known to explain or define the preceeding element - here it is used to indicate the start of the definition and contents of a question. The main intention with the concrete syntax design is that only minor knowledge about surveys is enough to be able to use the DSL with ease. 
 
 \section{Language Implementation and Code Generation}
-We have chosen to model our language as an external DSL such that it can be independent of any other language. Our DSL does not require any functionality such as expression evaluation that may easily be handed down in an internal DSL. Therefore we have chosen to implement it as an external DSL. 
+We have chosen to model our language as an external DSL such that it can be independent of any other language. 
 
-The first part of our system is an Android app which can be used to answer surveys. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android app. This would on the other hand make the app slower on the computationally constrained hardware Android runs within. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.\\
+%Our DSL does not require any functionality such as expression evaluation that may easily be handed down in an internal DSL. Therefore we have chosen to implement it as an external DSL. 
+
+The first part of our system is an Android app which can be used to answer surveys. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android app. This could on the other hand make the app slower on the computationally constrained hardware Android runs within. It would also be harder to read the files of the interpreted language if the format or language changes since those changes would also need to be incorporated on the Android platform side. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.\\
 
 INSERT TEXT ABOUT THE WEB APP HERE!\\
 
