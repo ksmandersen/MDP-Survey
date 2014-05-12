@@ -130,7 +130,14 @@ The survey DSL itself is implemented using Xtext \cite{xtext}, an Open Source fr
 
 
 \subsection {HTML Implementation}
-
+The second target platform for the program written in our language is the standard web platform. The flow of the HTML implementation is depicted in fig. \ref{fig:htmlgen}.
+\begin{figure}
+\centering
+\includegraphics[height=6.2cm]{htmlgen}
+\caption{A figure displaying the code generation flow of the HTML implementation.}
+\label{fig:htmlgen}
+\end{figure}
+%Athanisios: Explain it on a more abstract level in relation to the figure.
  HTML output pipeline:
 Convert Syntax tree to objects using an HTMLFactory.
 HTMLFactory receives the DSL as input and creates objects which know how to combine the data from the tree
@@ -181,7 +188,8 @@ The testing of the code generation is purely manual. The general procedure was t
 \subsubsection{Android Application}
 The generated code for the Android application has been manually tested by exporting the generated files, namely the manifest file, the activity file and the strings-file, into a new empty Android code project. The project is built and run on an emulator and on a Samsung Galaxy \textbf{??}. We simulated a surveyee by answering the questions and checking the validity of each question- and answer description before submitting the data.
 \subsubsection{Web application}
-HTML web application test description goes here.
+%Athanasios: HTML web application test description goes here.
+text.
 
 \section{Further Work}
 In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. Finally, we should have permitted comments in our language, as suggested by \cite{karsai}. Ultimately, the reasons for not adding the improvements are either due to reduced workforce, discovering them late in the project, or time constraints.
