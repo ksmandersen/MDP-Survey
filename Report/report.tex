@@ -39,7 +39,7 @@ This paper covers the process of modelling and structuring a domain-specific lan
 \end{abstract}
 
 \section{Introduction}
-This paper describes the design and implementation of a Domain Specific Language for generating survey applications. The purpose of the project is to design a language that can be used by a person with no prior programming experience to define surveys. Within the domain, a DSL is substantially easier to use and understand compared to general-purpose programming languages\cite{mernik}. By exposing the DSL to people who understand the domain, you allow for better communication between the programmer, who writes the code for the DSL, and the customer, that is - the domain expert\cite{fowler}. 
+This paper describes the design and implementation of a Domain Specific Language for generating survey applications. The purpose of the project is to design a language that can be used by a person with no prior programming experience to define surveys. Within the domain, a DSL is substantially easier to use and understand compared to general-purpose programming languages \cite{mernik}. By exposing the DSL to people who understand the domain, you allow for better communication between the programmer, who writes the code for the DSL, and the customer, that is - the domain expert \cite{fowler}. 
 
 The surveys defined in the DSL can then be used to generate applications for answering surveys on multiple platforms. This reduces the amount of code duplication a programmer would generally encounter while writing a survey application for multiple platforms. In turn this also reduces the time development takes. Most importantly the survey DSL along with the code generation tool can be used to generate and endless number of survey applications without rewriting any code. 
 %Stefan: Briefly mention how we did it.
@@ -47,7 +47,7 @@ The surveys defined in the DSL can then be used to generate applications for ans
 The first step towards designing a DSL is to perform the domain analysis. The analysis provides the neccessary information to model and design the language. Code can be generated from a program written in the DSL by using the dynamic survey-specific information contained in the program and inserting it into several static templates. After writing a valid survey, the generated code is immediately accesible to the user. 
 
 \section{System Overview}
-The flow of the system is visualized in Fig. \ref{fig:flow} showing where and when various programming-specific tasks take place.
+The flow of the system is visualized in fig. \ref{fig:flow} showing where and when various programming-specific tasks take place.
 \begin{figure}
 \centering
 \includegraphics[height=6.2cm]{systemflow}
@@ -62,7 +62,7 @@ From a target user's viewpoint, he writes his survey in the editor built in Ecli
 %Domain analysis and the meta-model
 %Concrete-syntax (interesting aspects of the grammar)
 %How and what design principles you followed? (cite literature) \\
-When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey\cite{surveymonkey} and Obsurvey\cite{obsurvey} as inspiration. Due to their popularity, the language is specifically designed to support their survey design. Their surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to insert free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. A question can depend on previous answers meaning it is only shown if a certain answer was chosen earlier. This is useful when some answers make the following questions irrelevant. The combined functionality of the investigated surveys lead to the following requirements for the survey system:
+When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey \cite{surveymonkey} and Obsurvey \cite{obsurvey} as inspiration. Due to their popularity, the language is specifically designed to support their survey design. Their surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to insert free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. A question can depend on previous answers meaning it is only shown if a certain answer was chosen earlier. This is useful when some answers make the following questions irrelevant. The combined functionality of the investigated surveys lead to the following requirements for the survey system:
 \begin{itemize}
 \item  A survey must contain at least one question. 
 \item A question has a type indicating the amount and types of answers allowed. 
@@ -72,31 +72,33 @@ When performing the domain analysis we searched for the most popular online surv
 \item Open questions do not contain any predefined answers but allow a user to define the answer themselves. 
 \item An open question must contain a single open(not predefined) answer.
 \end{itemize}
-The structure of the meta-model shown in Fig. \ref{fig:mmod} is based on requirements these requirements. 
-\begin{figure}
+When defining the elements of the language, we chose to follow a set of guidelines by Karsai et al. \cite{karsai}. The main guidelines being
+\begin{quotation}
+\emph{Reflect only the necessary domain concepts.} [...] \emph{Keep it simple.} [...] \emph{Avoid unnecessary generality.} [...] \emph{Limit the number of language elements.}
+\end{quotation}
+\begin{figure}[h]
 \centering
  \includegraphics[height=6.2cm]{metamodel}
 \caption{A figure depicting the metamodel of the DSL.}
 \label{fig:mmod}
 \end{figure}
-The \textsf{Survey} root element contains one or more questions. The \textsf{Question} entity is split into three subentities denoting the type of question. An alternative approach would be to merge the \textsf{MultipleChoice} and \textsf{RadioChoice} entities and use an enumeration to describe a question type attribute. However, we argue that it is visually more pleasing to have the distinct separation displayed in the model. A \textsf{Question} contains one or more references to answers denoting the relevancy of the question. A constraint is run on the model, checking that no question requires one of its own answers. The model provides the basis for the abstract syntax of the domain-specific language, which is used to write a survey in concrete syntax. During the design phase of the language we chose to follow a set of guidelines by Karsai, G., et al.\cite{karsai}. The main guidelines being 
-\begin{quotation}
-\emph{Keep it simple.} [...] \emph{Avoid unnecessary generality.}
-\end{quotation}
-This is reflected in the model which contains a minimum number of entities, and the concrete syntax which only contains the neccessary components to satisfy the requirements. We will explain our concrete syntax based on the example \textsf{*.survey}-file shown in Fig. \ref{fig:concrete}.
+During the language design phase, simplicity is one of the main goals \cite{karsai}. Along with the design guidelines, this is hopefully reflected in the model which contains a minimum number of entities while still capturing the essence of the survey domain.  
+The structure of the meta-model shown in fig. \ref{fig:mmod}. The \textsf{Survey} root element contains one or more questions. The \textsf{Question} entity is split into three subentities denoting the type of question. An alternative approach would be to merge the \textsf{MultipleChoice} and \textsf{RadioChoice} entities and use an enumeration to describe a question type attribute. However, we argue that it is visually more pleasing to have the distinct separation displayed in the model. A \textsf{Question} contains one or more references to answers denoting the relevancy of the question. A constraint is run on the model, checking that no question requires one of its own answers. The model provides the basis for the abstract syntax of the domain-specific language, which is used to write a survey in concrete syntax. 
+
+We will explain our concrete syntax based on the example program shown in fig. \ref{fig:concrete}.
 \begin{figure}
 \centering
-\includegraphics[height=6.2cm, angle=270]{concrete}
+\includegraphics[height=6.2cm]{concrete}
 \caption{Concrete syntax example.}
 \label{fig:concrete}
 \end{figure}
 
 \noindent
-It is in such a file that the target user writes their surveys. The file contains one or more question-segments. A segment defines the type of the question followed by a surveyor-defined description - the actual question to be read by the surveyee. The \textsf{optional}-keyword is used to indicate if the question in the given segment is optional. The remainder of the segment contains a list of answers starting with the \textsf{answer}-keyword, followed by an identifier and a description (the actual predefined answer). The identifier is only used internally when referencing the answer from somewhere else in the program. The referencing of answers is used when \emph{requiring} that certain answers have been chosen by the surveyee in order for the question to be relevant. The naming of the keywords are chosen specifically to capture the essence of their functionality and be easily understandable by anyone with no prior programming experience. When designing the concrete syntax of a domain-specific language, Karsai, G., et al.\cite{karsai} recommends that one should
+It is in such a file that the target user writes their surveys. The file contains one or more question-segments. A segment defines the type of the question followed by a surveyor-defined description - the actual question to be read by the surveyee. The \textsf{optional}-keyword is used to indicate if the question in the given segment is optional. The remainder of the segment contains a list of answers starting with the \textsf{answer}-keyword, followed by an identifier and a description (the actual predefined answer). The identifier is only used internally when referencing the answer from somewhere else in the program. The referencing of answers is used when \emph{requiring} that certain answers have been chosen by the surveyee in order for the question to be relevant. The naming of the keywords are chosen specifically to capture the essence of their functionality and be easily understandable by anyone with no prior programming experience. When designing the concrete syntax of a domain-specific language, Karsai et al. \cite{karsai} recommends that one should
 \begin{quotation}
- \emph{Adopt existing notations domain experts use.}
+ \emph{Adopt existing notations domain experts use.} [...] \emph{Use descriptive notations.}
 \end{quotation}
-Thus, many of the keywords are names of concepts used in the survey domain. The colon is commonly known to explain or define the preceeding element - here it is used to indicate the start of the definition and contents of a question. The main intention with the concrete syntax design is that only minor knowledge about surveys is enough to be able to use the DSL with ease. 
+Thus, many of the keywords are names of concepts used in the survey domain. The colon is commonly known to explain or define the preceeding element - here it is used to indicate the start of the definition and contents of a question. The overall goal of the concrete syntax design is that only minor knowledge about surveys is enough to be able to use the DSL with ease. 
 
 \section{Language Implementation and Code Generation}
 We have chosen to model our language as an external DSL such that it can be independent of any other language. 
@@ -160,7 +162,7 @@ Constraints are checked automatically on a concrete instance of our language bef
 \item \emph{circularity}: no question contains one of their own answers in the list of required previous answers.
 \item \emph{empty strings}: no question or answer has an empty description.
 \end{itemize}
-Code is only generated when all constraints are satisfied. If that is not the case, a message is printed to the console informing the user about the constraint violation(s). Saving the program in Fig. \ref{fig:concretefail} does not generate any code and will print the following message in the console window:
+Code is only generated when all constraints are satisfied. If that is not the case, a message is printed to the console informing the user about the constraint violation(s). Saving the program in fig. \ref{fig:concretefail} does not generate any code and will print the following message in the console window:
 
 \noindent
 \texttt{Constraints violated. Either a question contains a reference to its own answer or a description string is empty.}
@@ -182,7 +184,7 @@ The generated code for the Android application has been manually tested by expor
 HTML web application test description goes here.
 
 \section{Further Work}
-In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. Ultimately, the reason for not adding the improvements are due to reduced workforce and time constraints.
+In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. Finally, we should have permitted comments in our language, as suggested by \cite{karsai}. Ultimately, the reasons for not adding the improvements are either due to reduced workforce, discovering them late in the project, or time constraints.
 
 \section{Conclusion}
 Our conclusion. The end.
