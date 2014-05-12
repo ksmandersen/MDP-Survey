@@ -137,27 +137,16 @@ The second target platform for the program written in our language is the standa
 \caption{A figure displaying the code generation flow of the HTML implementation.}
 \label{fig:htmlgen}
 \end{figure}
-%Athanisios: Explain it on a more abstract level in relation to the figure.
- HTML output pipeline:
-Convert Syntax tree to objects using an HTMLFactory.
-HTMLFactory receives the DSL as input and creates objects which know how to combine the data from the tree
-and the appropriate html tags  (fuses data with presentation).
-Once all the data are prepared the HTMLGenerator produces the static header, replacing the "global"
-information (page title, url links etc) and then starts appending to a string builder the objects from HTMLFactory.
-Each of these objects knows how to convert itself into an html read-able format  via EncodeToHTMLString() 
-while the HTMLEncoder knows how to embed different objects together  (for example opening and closing <div> </div>
-tags for each element).
 
- HTML verifier:
-Once the html file is produced, collective from the HTMLFactory are passed down to the HTMLVerifierTest.
-The verifier then opens the target file and tries to verify that:
-\begin{enumerate}
-\item the file exists
-\item the correct \texttt{<title>} title is given
-\item the correct number of questions can be found
-\item the correct \texttt{<form>} controls exist
-\item the e-mail address of the \texttt{<form>}, towards which the information is send is correct
-\end{enumerate}
+The HTML code generation works as a single pipeline, each phase of the code, Prologue, Body and Epilogue are added together to produce the final result. As is common in html, semantics and presentation become mixed through the code. Therefore controlling logic like the checks wether all non-optional questions have been answered are defined in proximity with purely presentation concepts, like the colors and fonts to be used. \\
+
+In the HTML Prologue we can find the basic header of an HTML file, defining things like the page title, meta tags to assist search engines in finding the page. The page's style is also defined in the header using css, which minimizes to a certain extend how much the actual content is mixed with presentation logic. The vast majority of the Prologue is static until we reach the javascript logic which controls the final submission of the form. In this script all preconditions are checked (all non-optional questions have at least an answer) which allows the e-mail with the answers to be sent. \\
+
+The main part of the HTML is the Body, which holds all the actual text with the questions and possible answers. This is the part where controlling logic, presentation layer and user content become the most intermingled. Depending on the type of the question (Multiple answers, only single answers, open-form) a different type of layout is rendered to the page, with different type of html input controls. The html tags are configured with the correct ids for each answer, and the type of input elements that will be rendered to the page will "force" correctness (e.g. only a single Radio button can be selected in a group, so only a single answer can be given). Much like the page itself, each question in itself is a small pipeline; with its own Prologue, Body and Epilogue. The Prologue consists of the text of the question itself and wether it is optional or not. The Body consists of the different answers and the Epilogue just ensures that all html tags are appropriately "closed".  \\
+
+Finally the HTML  Epilogue will provide the final controls of the form which allow the user to either submit his answers or reset the page, together with the appropriate hooks to run the javascript code before the form is passed to the user's e-mail client. \\
+
+
 
 \section{Testing}
 The meta-model has been tested manually by creating dynamic instances of the model. We attempted to create both valid and invalid instances to check if the model can satisfy the requirements. This procedure helped us catching errors earlier in the process.
@@ -188,8 +177,20 @@ The testing of the code generation is purely manual. The general procedure was t
 \subsubsection{Android Application}
 The generated code for the Android application has been manually tested by exporting the generated files, namely the manifest file, the activity file and the strings-file, into a new empty Android code project. The project is built and run on an emulator and on a Samsung Galaxy \textbf{??}. We simulated a surveyee by answering the questions and checking the validity of each question- and answer description before submitting the data.
 \subsubsection{Web application}
-%Athanasios: HTML web application test description goes here.
-text.
+
+
+ HTML verifier:
+Once the html file is produced, the file is checked by the HTML Verifier.
+The verifier then tries to open the target file and tests that:
+\begin{enumerate}
+\item the file exists
+\item the correct \texttt{<title>} title is given
+\item the correct number of questions can be found
+\item the correct \texttt{<form>} controls exist
+\item the e-mail address of the \texttt{<form>}, towards which the information is send is correct
+\end{enumerate}
+
+
 
 \section{Further Work}
 In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. Finally, we should have permitted comments in our language, as suggested by \cite{karsai}. Ultimately, the reasons for not adding the improvements are either due to reduced workforce, discovering them late in the project, or time constraints.
