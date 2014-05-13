@@ -241,7 +241,7 @@ public class HTMLGenerator implements IGenerator {
                 if (_isIsOptional_1) {
                   _builder.append("\t");
                   _builder.append("/* ");
-                  EList<Answer> _answers_2 = ((MultipleChoice) mq).getAnswers();
+                  EList<Answer> _answers_2 = ((RadioChoice) mq).getAnswers();
                   int _length_1 = ((Object[])Conversions.unwrapArray(_answers_2, Object.class)).length;
                   int _plus_4 = (answersNo + _length_1);
                   int _answersNo_4 = answersNo = _plus_4;
