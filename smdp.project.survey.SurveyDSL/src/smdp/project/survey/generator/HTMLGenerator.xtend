@@ -94,7 +94,7 @@ function checkValue(form)
 		«/* Radio Choice */»
 		«ELSEIF(mq instanceof RadioChoice)»
 			«IF(mq.isIsOptional)»
-				/* «answersNo = answersNo + (mq as MultipleChoice).answers.length» */
+				/* «answersNo = answersNo + (mq as RadioChoice).answers.length» */
 			«ELSE»
 				if(ready && !(
 				«FOR ans : (mq as RadioChoice).answers»		
