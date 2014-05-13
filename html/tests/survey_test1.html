@@ -1,0 +1,107 @@
+<html>
+<head>
+ <title> Survey Templates </title> 
+ <style>
+ 	p { color:#ffd835 ; font:14pt Helvetica }
+ 	p:first-line { color: green; font-size: 200% }
+ 	body { background:white }
+ 	Div	{
+		background	:   #EBEFF3;
+		padding		:	0.5%;
+		font-family	:   Times, Verdana;
+		border		:	1px solid #EBEFF3;
+	}
+	
+	Div.titleDiv	{
+		background	:   #7EA8CA;
+		padding		:	2%;
+		font-family	:   Times, Verdana;
+		text-shadow :   3px 3px 4px rgba(0, 0, 0, 0.2); 
+	}
+	
+	table, th		{		border:1px solid black;		width:	100%;	}
+	
+	th			{		background:	#7EA8CA;		text-align:	Left;	text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15); }
+	
+	td			{		background: 	White;		}
+	td:hover		{		background: 	WhiteSmoke;	}
+	
+	input[type=radio]:checked {	border: 1px solid black;	}
+	
+	div:hover{	border:1px solid LightGray; }
+
+	textarea	{ resize: none; width:	100%;  }
+	text		{ resize: none; width:	70%;  }
+	
+	.red_caps {color:red; font-style:small-caps; font:14pt Courier;}
+	
+ </style>
+ <script>
+
+ </script>
+</head>
+<body>
+  <form name="input_form" action="MAILTO:group8survey@example.dk?Subject=SMDP%20Group%208%20survey%20answer" method="post" enctype="text/plain">
+  <div class="titleDiv">
+	<h1> My Survey </h1> 
+  </div>
+  <br>
+  
+  <div>
+  <table>
+  <tr>
+	<th>
+		Question #1: <br>
+		How would you rate _SUBJECT_?
+	</th>
+	</tr>
+	<tr><td> <input name="q01" id="q01_op01" type="radio" value="op01">  <label for="q01_op01"> Good </label> </td></tr>
+	<tr><td> <input name="q01" id="q01_op02" type="radio" value="op02">  <label for="q01_op02"> Very Good </label> </td></tr>
+	<tr><td> <input name="q01" id="q01_op03" type="radio" value="op03">  <label for="q01_op03"> Excellent! </label> </td></tr>
+	<tr><td> <input name="q01" id="q01_op04" type="radio" value="op04">  <label for="q01_op04"> Other:  </label> 
+			 <input name="q01other" id="q01other" type="text" size=80 maxlength=200> </td></tr>
+  </table>
+  </div>
+  <br>
+  
+  <div>
+  <table>
+  <tr>
+	<th>
+		Question #2: <br>
+		Which do you like?  (Tick all of interest)
+	</th>
+	</tr>
+	<tr> <td><input name="q02" id="q02_op01" type="checkbox" value="op01"> <label for="q02_op01"> Music </label> </td> </tr>
+	<tr> <td><input name="q02" id="q02_op02" type="checkbox" value="op02"> <label for="q02_op02"> Films </label> </td> </tr>
+	<tr> <td><input name="q02" id="q02_op03" type="checkbox" value="op03"> <label for="q02_op03"> Travel </label> </td> </tr>
+	<tr> <td><input name="q02" id="q02_op04" type="checkbox" value="op04"> <label for="q02_op04"> Sports </label> </td> </tr>
+	<tr> <td><input name="q02" id="q02_op05" type="checkbox" value="op05"> <label for="q02_op04"> More: </label> 
+		 <input name="q02other" id="q02other" type="text" size=80 maxlength=200> </td></tr>
+  </table>
+  </div>
+  <br>
+  
+  <div>
+  <table>
+  <tr>
+	<th>
+		Question #3: <br>
+		Tell us what you think
+	</th>
+	</tr>
+	<tr> <td>
+	<textarea name="q03" id="q03_op01" rows=4> Please enter your answer here... </textarea> 
+	</td> </tr>
+  </table>
+  </div>
+  <br>
+ 
+ <div class="titleDiv">
+	<h3> Thank you! </h3> 
+	<input type="submit" value="Submit">
+	<input type="reset" value="Reset">
+  </div>
+ </form>
+</body>
+</html>
