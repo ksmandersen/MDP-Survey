@@ -38,3 +38,5 @@ local.properties
 *.log
 *.synctex.gz
 *.fdb_latexmk
+smdp.project.survey.SurveyDSL/xtend-gen/smdp/project/survey/generator/HTMLGenerator.java
+smdp.project.survey.SurveyDSL/xtend-gen/smdp/project/survey/generator/.HTMLGenerator.java._trace
