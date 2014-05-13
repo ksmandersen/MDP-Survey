@@ -42,7 +42,6 @@ This paper covers the process of modelling and structuring a domain-specific lan
 This paper describes the design and implementation of a Domain Specific Language for generating survey applications. The purpose of the project is to design a language that can be used by a person with no prior programming experience to define surveys. Within the domain, a DSL is substantially easier to use and understand compared to general-purpose programming languages \cite{mernik}. By exposing the DSL to people who understand the domain, you allow for better communication between the programmer, who writes the code for the DSL, and the customer, that is - the domain expert \cite{fowler}. 
 
 The surveys defined in the DSL can then be used to generate applications for answering surveys on multiple platforms. This reduces the amount of code duplication a programmer would generally encounter while writing a survey application for multiple platforms. In turn this also reduces the time development takes. Most importantly the survey DSL along with the code generation tool can be used to generate and endless number of survey applications without rewriting any code. 
-%Stefan: Briefly mention how we did it.
 
 The first step towards designing a DSL is to perform the domain analysis. The analysis provides the neccessary information to model and design the language. Code can be generated from a program written in the DSL by using the dynamic survey-specific information contained in the program and inserting it into several static templates. After writing a valid survey, the generated code is immediately accesible to the user. 
 
@@ -56,7 +55,7 @@ The flow of the system is visualized in fig. \ref{fig:flow} showing where and wh
 \end{figure}
 The meta-model of our language written in the Ecore language is where the structure and relations of the system are defined. Together with the abstract syntax, the structure and relations of the meta-model are passed to the concrete syntax. At this point, a language-specific file (*.survey) is the center of attention. Constraints are checked against this file and code is generated from this file if the constraints are satisfied. The actual survey is the endpoint of the system flow and can take on different forms. In our case, a real survey consists of files that provide the core of an Android application and a web application. 
 
-From a target user's viewpoint, he writes his survey in the editor built in Eclipse following the survey program syntax. If no constraints are violated, code is generated from his survey when he saves the program. If he wants to put the generated Android application code to use, he has to create a new Android project and add the generated files. The application should be ready for deployment on an Android phone. In the case of a Web application he has to move the generate files to his webserver and they should be ready for use.
+From a target user's viewpoint, he writes his survey in the editor built in Eclipse following the survey program syntax. If no constraints are violated, code is generated from his survey when he saves the program. If he wants to put the generated Android application code to use, he has to create a new Android project and add the generated file. The application should be ready for deployment on an Android phone. In the case of a Web application he has to move the generate file to his webserver and they should be ready for use.
 
 \section{Language Requirements and Design}
 %Domain analysis and the meta-model
@@ -152,11 +151,11 @@ This is because the second question is circular by requiring an answer contained
 \label{fig:concretefail}
 \end{figure}
 \subsubsection{Unit Tests}
-Unit tests are included in the auto-generated test project belonging to the DSL. These are written in Xtend and uses the jUnit framework. Two *.survey test instances are included in the test project and used in the tests. Given a *.survey file, the tests parses the files and check that the entities are correctly structured and contain the expected information. 
+Unit tests are included in the auto-generated test project belonging to the DSL. These are written in Xtend and uses the jUnit framework. Two *.survey test instances are included in the test project and used in the tests. Given a *.survey file, the tests parse the files and check that the entities are correctly structured and contain the expected information. 
 \subsection{Code Generation}
 The testing of the code generation is purely manual. The general procedure was to generate the files and see if they could be used as intended. A brief description of the procedures is provided below.
 \subsubsection{Android Application}
-The generated code for the Android application has been manually tested by exporting the generated files, namely the manifest file, the activity file and the strings-file, into a new empty Android code project. The project is built and run on an emulator and on a Samsung Galaxy \textbf{??}. We simulated a surveyee by answering the questions and checking the validity of each question- and answer description before submitting the data.
+The generated code for the Android application has been manually tested by exporting the generated activity file into a new empty Android code project. The project is built and run on an emulator and on a Samsung Galaxy S3 Mini. We simulated a surveyee by answering the questions and checking the validity of each question- and answer description before submitting the data. Unfortunately, we found a significant flaw in the Java code - a question can only require a single previous answer. Because this error was discovered late in the process and the solution would require a relatively large restructure of the code, we had to leave it for further work. 
 \subsubsection{Web application}
 The generated code the web application is tested using an HTML Verifier. Once the HTML file is produced, the file is checked by the HTML Verifier. The verifier tries to open the target file and tests that:
 \begin{enumerate}
@@ -169,7 +168,7 @@ The generated code the web application is tested using an HTML Verifier. Once th
 Further manual testing was done by opening the generated file in a browser and checking that the layout and validation-checking behaves as intended.
 
 \section{Further Work}
-In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. Finally, we should have permitted comments in our language, as suggested by \cite{karsai}. Ultimately, the reasons for not adding the improvements are either due to reduced workforce, discovering them late in the project, or time constraints.
+In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. The generated Android application should also support questions requiring more than one previous answer. Finally, we should have permitted comments in our language, as suggested by \cite{karsai}. Ultimately, the reasons for not adding the improvements are either due to reduced workforce, discovering them late in the project, or time constraints.
 
 \section{Conclusion}
 Our conclusion. The end.
