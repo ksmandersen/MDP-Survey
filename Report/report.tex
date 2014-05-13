@@ -104,7 +104,13 @@ Thus, many of the keywords are names of concepts used in the survey domain. The 
 We have chosen to model our language as an external DSL such that it can be independent of any other language. The survey DSL itself is implemented using Xtext \cite{xtext}, an Open Source framework for development of programming languages and DSL's. Xtext is highly integrated with the Eclipse IDE. When developing a language using Xtext it is possible to generate Eclipse plugins which offer a fully integrated IDE within Eclipse, allowing the user to benefit from syntax highlighting, error messaging and other features. By using Xtext for our DSL we gain these capabilities with only little effort. Using the template capabilities of Xtend \cite{xtend}, we can generate code from instances created in our language.
 
 \subsection{Android implementation}
-The first part of the code generation generates an Android application for answering a survey. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android application. This could on the other hand make the app slower on the computationally constrained hardware Android runs within. It would also be harder to read the files of the interpreted language if the format or language changes since those changes would also need to be incorporated on the Android platform side. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.
+The first part of the code generation generates an Android application for answering a survey. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android application. This could on the other hand make the app slower on the computationally constrained hardware Android runs within. It would also be harder to read the files of the interpreted language if the format or language changes since those changes would also need to be incorporated on the Android platform side. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms. The flow of the Android application code generation is shown in fig. \ref{fig:appgen}. The generator receives a survey and generates an activity file. The user has to manually insert the generated file into an Android Project. Ideally, we would have preferred to generate the entire Android project required for an Android Application making the process denoted by the dashed arrows automatic. 
+\begin{figure}
+\centering
+\includegraphics[height=2.5cm]{appgen}
+\caption{A figure displaying the code generation flow of the Android application implementation.}
+\label{fig:appgen}
+\end{figure}
 The survey is displayed with one question on each page. That way it is easier to show the next question based on the answer of the the current answer. Once all the questions have been filled out the activity composes an email with all the answers that can be send to the survey creator.
 
 \begin{figure}[h]
@@ -114,7 +120,7 @@ The survey is displayed with one question on each page. That way it is easier to
 \label{fig:android_screenshot}
 \end{figure}
 
-The Android application has three classes that represent \textsf{Survey}, \textsf{Question}, \textsf{Answer} from the meta model. It also has a few view fragments and a single activity that controls the flow of the application. The code generator only needs to generate a single method for the \textsf{MainActivty} that instantiates the classes from the domain model. This way, the amount of dynamic code in the Android application stays minimal.
+The Android application has three classes that represent \texttt{Survey},\texttt{Question}, \texttt{answer} from the meta model. It also has a few view fragments and a single activity that controls the flow of the application. The code generator only needs to generate a single method for the \texttt{MainActivity} that instantiates the classes from the domain model. This way, the amount of dynamic code in the Android application stays minimal.
 
 In fig. \ref{fig:android_screenshot} a screenshot of the working Android application is shown. The application is generated from the survey language example shown in figure \ref{fig:concrete}.
 
@@ -126,7 +132,7 @@ The second part of the code generation generates a Web application for answering
 \caption{A figure displaying the code generation flow of the HTML implementation.}
 \label{fig:htmlgen}
 \end{figure}
-The flow of the HTML implementation is depicted in fig. \ref{fig:htmlgen}. The HTML code generation works as a single pipeline, each phase of the code, Prologue, Body and Epilogue are added together to produce the final result. Semantics and presentation is mixed through the code. Therefore controlling logic, such as  checking whether all non-optional questions have been answered, are defined in proximity with purely presentation concepts, like the colors and fonts to be used. 
+The flow of the HTML implementation is depicted in fig. \ref{fig:htmlgen}. The HTML code generation works as a single pipeline, each phase of the code, Prologue, Body and Epilogue are added together to produce the final result. Semantics and presentation is mixed through the code.  
 
 In the HTML Prologue we can find the basic header of an HTML file, defining things like the page title, meta tags to assist search engines in finding the page. The page's style is also defined in the header using CSS, which minimizes to a certain extend how much the actual content is mixed with presentation logic. The vast majority of the Prologue is static until we reach the javascript logic which controls the final submission of the form. In this script all preconditions are checked (all non-optional questions have at least an answer) which allows the e-mail with the answers to be sent. 
 
