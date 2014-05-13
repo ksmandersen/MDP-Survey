@@ -106,16 +106,16 @@ We have chosen to model our language as an external DSL such that it can be inde
 The first part of the code generation generates an Android application for answering a survey. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android application. This could on the other hand make the app slower on the computationally constrained hardware Android runs within. It would also be harder to read the files of the interpreted language if the format or language changes since those changes would also need to be incorporated on the Android platform side. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.
 The survey is displayed with one question on each page. That way it is easier to show the next question based on the answer of the the current answer. Once all the questions have been filled out the activity composes an email with all the answers that can be send to the survey creator.
 
-The Android app has three classes that represent \texttt{Survey},\texttt{Question}, \texttt{Option} from the meta model. It also has a few view fragments and a single activity that controls the flow of the application. The code generator only needs to generate a single method for the \texttt{MainActivty} that instantiates the classes from the domain model. This way, the amount of dynamic code in the Android application stays minimal.
-
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[width=4cm]{android_screenshot}
 \caption{A screenshot of the android app}
 \label{fig:android_screenshot}
 \end{figure}
 
-% descibe interface from screenshot
+The Android application has three classes that represent \texttt{Survey},\texttt{Question}, \texttt{Answer} from the meta model. It also has a few view fragments and a single activity that controls the flow of the application. The code generator only needs to generate a single method for the \texttt{MainActivty} that instantiates the classes from the domain model. This way, the amount of dynamic code in the Android application stays minimal.
+
+In figure \ref{fig:android_screenshot} a screenshot of the working Android application is shown. The application is generated from the survey language example shown in figure \ref{fig:concrete}.
 
 \subsection {HTML Implementation}
 The second part of the code generation generates a web application for answering a survey. Web interfaces are ideal when wanting to span a variety of platforms and systems, providing a uniform presentation layer while leaving the platform- and Operating System-specific implementation to the browser. While a web application can be less interactive and intuitive to the end-user, the ease of deployment (the web page does not require installation like the android application) means that users that might be discouraged from going through an installation process could be convinced to click on a link in their browsers and complete an online survey. At the same time a web page provides new challenges, since separating unique users and offering any sort of intermediate persistency ("pausing" a survey and returning to it at a later time) increase the complexity requirements on the sever-side. 
