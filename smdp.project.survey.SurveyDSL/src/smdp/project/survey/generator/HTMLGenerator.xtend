@@ -196,6 +196,69 @@ function checkValue(form)
 '''
 	}
 	
+	
+	def static generateHTMLVerifier(Survey it){
+		'''
+		import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class HTMLVerifier
+{
+	String contents;
+	
+	public static String RunTests(String filename)
+	{
+		HTMLVerifier verifier = new HTMLVerifier();
+		String error = verifier.TryOpenFile(filename);
+		
+		if(error == null)
+			error = verifier.VerifyNumberOfRepeats("Question", 
+			«getQuestions.length»
+			);
+		
+		return error == null ? "Success!" : error;
+	}
+
+	private String TryOpenFile(String fileName)
+	{
+		Path path = Paths.get(fileName);
+		File file = path.toFile();
+		if(file == null || !file.exists())
+			return "File does not exist!";
+		
+		try {
+			byte [] bytes = Files.readAllBytes(path);
+			contents = new String(bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "Error while reading file!";
+		}
+		
+		return null; // no error
+	}
+	
+	// Verify a substring appears AT LEAST the number of times
+	private String VerifyNumberOfRepeats(String subStr, int times)
+	{
+		int lastIndex = 0;
+		for(int i = 0; i < times; ++i)
+		{
+			int index = contents.substring(lastIndex, contents.length() - 1).indexOf(subStr);
+			if(index == -1)
+				return "Substring " + subStr + " was only found " + i + " times";
+			lastIndex += index + subStr.length();
+		}
+		return null; // no error
+	}
+	
+}
+		
+		'''
+	}
+	
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		if(EcoreUtil.getAllProperContents(resource, false).forall[SurveyDSLValidator.constraint(it)])
 			resource.allContents.toIterable.filter(typeof(Survey)).
@@ -203,6 +266,7 @@ function checkValue(form)
 					val fname = "MainActivity"
 					// generate HTML implementation
 					fsa.generateFile("app-gen/src/" + fname + ".html", it.generateHTMLActivity)
+					fsa.generateFile("app-gen/src/HTMLVerifier.java", it.generateHTMLVerifier)
 				]
 		else println("Constraints violated. Either a question contains a reference to its own answer or a description string is empty.")
 	}
