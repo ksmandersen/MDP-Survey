@@ -18,7 +18,7 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{Model-Driven Development Project:\\ Modelling, Domain-Specific Language\\ and Code Generation}
+\title{Model-Driven Development Project:\\ Modelling \& Implementing a Survey DSL}
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Model-Driven Development Project}
@@ -169,7 +169,7 @@ The testing of the code generation is purely manual. The general procedure was t
 \subsubsection{Android Application}
 The generated code for the Android application has been manually tested by exporting the generated activity file into a new empty Android code project. The project is built and run on an emulator and on a Samsung Galaxy S3 Mini. We simulated a surveyee by answering the questions and checking the validity of each question- and answer description before submitting the data. Unfortunately, we found a significant flaw in the Java code - a question can only require a single previous answer. Because this error was discovered late in the process and the solution would require a relatively large restructure of the code, we had to leave it for further work. 
 \subsubsection{Web application}
-The generated code the Web application is tested using an HTML Verifier. Once the HTML file is produced, the file is checked by the HTML Verifier. The verifier tries to open the target file and tests that:
+The generated code for the Web application is tested manually using an HTML Verifier. Once the HTML file is produced, the file was checked by the HTML Verifier. The verifier tries to open the target file and tests that:
 \begin{enumerate}
 \item the file exists
 \item the correct \texttt{<title>} title is given
