@@ -35,7 +35,7 @@
 
 
 \begin{abstract}
-This paper covers the process of modelling and structuring a domain-specific language (DSL). By being smaller and easier to understand than a general-purpose programming language, a DSL makes it possible for a larger amount of people to write programs in the domain. This paper focuses on the survey domain. Having performed a domain analysis, we present a survey-specific language including its own editor and compiler. Code is automatically generated from the surveys written in the DSL and targets multiple platforms, namely the Android mobile platform and a web platform. 
+This paper covers the process of modelling and structuring a domain-specific language (DSL). By being smaller and easier to understand than a general-purpose programming language, a DSL makes it possible for a larger amount of people to write programs in the domain. This paper focuses on the survey domain. Having performed a domain analysis, we present a survey-specific language including its own editor and compiler. Code is automatically generated from the surveys written in the DSL and targets multiple platforms, namely the Android mobile platform and a Web platform. 
 \end{abstract}
 
 \section{Introduction}
@@ -58,16 +58,17 @@ The meta-model of our language written in the Ecore language is where the struct
 From a target user's viewpoint, he writes his survey in the editor built in Eclipse following the survey program syntax. If no constraints are violated, code is generated from his survey when he saves the program. If he wants to put the generated Android application code to use, he has to create a new Android project and add the generated file. The application should be ready for deployment on an Android phone. In the case of a Web application he has to move the generate file to his webserver and they should be ready for use.
 
 \section{Language Requirements and Design}
+\label{sec:requirements_and_design}
 %Domain analysis and the meta-model
 %Concrete-syntax (interesting aspects of the grammar)
 %How and what design principles you followed? (cite literature) \\
 When performing the domain analysis we searched for the most popular online survey sites and chose to use the survey templates provided by Surveymonkey \cite{surveymonkey} and Obsurvey \cite{obsurvey} as inspiration. Due to their popularity, the language is specifically designed to support their survey design. Their surveys span a variety of different types of questions. Multiple answers can be given to some questions, while others only allow a single answer. Most answers are preset, while some allows the user to insert free text. A question can contain answers of both types. The questions are either listed on a single page or divided into several pages. A question can depend on previous answers meaning it is only shown if a certain answer was chosen earlier. This is useful when some answers make the following questions irrelevant. The combined functionality of the investigated surveys lead to the following requirements for the survey system:
 \begin{itemize}
-\item  A survey must contain at least one question. 
+\item A survey must contain at least one question. 
 \item A question has a type indicating the amount and types of answers allowed. 
 \item A question can require specific previous answers and should only be made available if all the required answers were chosen by the user. 
 \item Multiple choice questions allow users to choose multiple predefined answers.
-\item RadioChoice questions should only allow a single answer. 
+\item Single choice questions should only allow a single answer. 
 \item Open questions do not contain any predefined answers but allow a user to define the answer themselves. 
 \item An open question must contain a single open(not predefined) answer.
 \end{itemize}
@@ -100,7 +101,7 @@ It is in such a file that the target user writes their surveys. The file contain
 Thus, many of the keywords are names of concepts used in the survey domain. The colon is commonly known to explain or define the preceeding element - here it is used to indicate the start of the definition and contents of a question. The overall goal of the concrete syntax design is that only minor knowledge about surveys is enough to be able to use the DSL with ease. 
 
 \section{Language Implementation and Code Generation}
-We have chosen to model our language as an external DSL such that it can be independent of any other language. The survey DSL itself is implemented using Xtext \cite{xtext}, an Open Source framework for development of programming languages and DSL's. Xtext is highly integrated with the Eclipse IDE. When developing a language using Xtext it is possible to generate which offer a fully integrated IDE within Eclipse, allowing the user to benefit from syntax highlighting, error messaging and other features. By using Xtext for our DSL we gain these capabilities with only little effort. Using the template capabilities of Xtend \cite{xtend}, we can generate code from instances created in our language.
+We have chosen to model our language as an external DSL such that it can be independent of any other language. The survey DSL itself is implemented using Xtext \cite{xtext}, an Open Source framework for development of programming languages and DSL's. Xtext is highly integrated with the Eclipse IDE. When developing a language using Xtext it is possible to generate Eclipse plugins which offer a fully integrated IDE within Eclipse, allowing the user to benefit from syntax highlighting, error messaging and other features. By using Xtext for our DSL we gain these capabilities with only little effort. Using the template capabilities of Xtend \cite{xtend}, we can generate code from instances created in our language.
 
 \subsection{Android implementation}
 The first part of the code generation generates an Android application for answering a survey. Because Android runs Java it would be easy to choose to run the DSL as interpreted language in the Android application. This could on the other hand make the app slower on the computationally constrained hardware Android runs within. It would also be harder to read the files of the interpreted language if the format or language changes since those changes would also need to be incorporated on the Android platform side. Instead we have chosen to generate native Java code for the Android app to make it fast and easily adaptable to other platforms.
@@ -109,13 +110,13 @@ The survey is displayed with one question on each page. That way it is easier to
 \begin{figure}[h]
 \centering
 \includegraphics[width=4cm]{android_screenshot}
-\caption{A screenshot of the android app}
+\caption{A screenshot of the android application.}
 \label{fig:android_screenshot}
 \end{figure}
 
-The Android application has three classes that represent \texttt{Survey},\texttt{Question}, \texttt{answer} from the meta model. It also has a few view fragments and a single activity that controls the flow of the application. The code generator only needs to generate a single method for the \texttt{MainActivty} that instantiates the classes from the domain model. This way, the amount of dynamic code in the Android application stays minimal.
+The Android application has three classes that represent \textsf{Survey}, \textsf{Question}, \textsf{Answer} from the meta model. It also has a few view fragments and a single activity that controls the flow of the application. The code generator only needs to generate a single method for the \textsf{MainActivty} that instantiates the classes from the domain model. This way, the amount of dynamic code in the Android application stays minimal.
 
-In figure \ref{fig:android_screenshot} a screenshot of the working Android application is shown. The application is generated from the survey language example shown in figure \ref{fig:concrete}.
+In fig. \ref{fig:android_screenshot} a screenshot of the working Android application is shown. The application is generated from the survey language example shown in figure \ref{fig:concrete}.
 
 \subsection {HTML Implementation}
 The second part of the code generation generates a Web application for answering a survey. Web interfaces are ideal when wanting to span a variety of platforms and systems, providing a uniform presentation layer while leaving the platform- and Operating System-specific implementation to the browser. While a Web application can be less interactive and intuitive to the end-user, the ease of deployment (the web page does not require installation like the android application) means that users that might be discouraged from going through an installation process could be convinced to click on a link in their browsers and complete an online survey. At the same time a web page provides new challenges, since separating unique users and offering any sort of intermediate persistency ("pausing" a survey and returning to it at a later time) increase the complexity requirements on the sever-side. 
@@ -176,7 +177,11 @@ Further manual testing was done by opening the generated file in a browser and c
 In order to further improve the functionality of the system we could have expanded the meta-model to include answer expressions. For instance, this would make a question's required previous answers more flexible by allowing them to be written as a boolean expression. Furthermore, we do not believe the testing is sufficient, namely, the testing of the code generation falls short. We would have liked to test the generated files automatically. The generated Android application should also support questions requiring more than one previous answer. Finally, we should have permitted comments in our language, as suggested by \cite{karsai}. Ultimately, the reasons for not adding the improvements are either due to reduced workforce, discovering them late in the project, or time constraints.
 
 \section{Conclusion}
-Our conclusion. The end.
+We have successfully modeled and implemented a DSL used to write surveys. 
+The DSL uses a simplistic syntax making it possible for domain experts without programming knowledge able to construct survey applications. 
+These applications target two different platforms, namely the Android mobile platform and a Web platform. The DSL comes with an editor integrated within the Eclipse IDE. The editor provides syntax highlighting, constraint- and error checking.
+
+The requirements for the DSL listed in section \ref{sec:requirements_and_design} are fully satisfied. However not all of the requirements are reflected in the implementation for the platforms. 
 
 \begin{thebibliography}{4}
 
