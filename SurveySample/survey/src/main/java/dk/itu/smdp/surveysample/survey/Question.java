@@ -23,6 +23,10 @@ public class Question {
         mAnsweredText = null;
     }
 
+    private String mRequiredPreviousOption;
+    public String getRequiredPreviousOption() { return mRequiredPreviousOption; }
+    public void setRequiredPreviousOption(String requiredPreviousOption) { mRequiredPreviousOption = requiredPreviousOption; }
+
     private Option mAnsweredOption;
     public Option getAnsweredOption() {
         return mAnsweredOption;

@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             mPreviousButton = (Button)rootView.findViewById(R.id.question_button_previous);
@@ -91,25 +91,55 @@ public class MainActivity extends ActionBarActivity {
         }
 
         private void createSurvey() {
-            Option catOption = new Option(getString(R.string.answer_pet_cat));
-            List<Option> options = new ArrayList<Option>();
-            options.add(catOption);
-            Question first = new Question(getString(R.string.hello_world), Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICE, "testQuestion", options);
-
-
-            Option coffeOption = new Option("such wow");
-            Option teaOption = new Option("omg there was");
-
-            List<Option> beverageOptions= new ArrayList<Option>();
-            beverageOptions.add(coffeOption);
-            beverageOptions.add(teaOption);
-
-            Question second = new Question(getString(R.string.question_cold_beverage), Question.QuestionType.QUESTION_TYPE_SINGLE_CHOICE, "beverageQuestion", beverageOptions);
-
             List<Question> questions = new ArrayList<Question>();
-            questions.add(first);
-            questions.add(second);
 
+            List<Option> qOptions1 = new ArrayList<Option>();
+            qOptions1.add(new Option("I like dogs"));
+            // 2
+            qOptions1.add(new Option("I hat dogs, but like cats"));
+            // 3
+            qOptions1.add(new Option("What else?"));
+            // 4
+
+            Question.QuestionType qType1 = Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICE;
+            Question question1 = new Question("What is your favorite pet?", qType1, "", qOptions1);
+            question1.setOptional(false);
+            questions.add(question1);
+            // 2
+
+            List<Option> qOptions2 = new ArrayList<Option>();
+            qOptions2.add(new Option("Tea"));
+            // 5
+            qOptions2.add(new Option("Coffee"));
+            // 6
+
+            Question.QuestionType qType2 = Question.QuestionType.QUESTION_TYPE_SINGLE_CHOICE;
+            Question question2 = new Question("What is better? Coffee or tea?", qType2, "", qOptions2);
+            question2.setOptional(true);
+            questions.add(question2);
+            // 3
+
+            List<Option> qOptions3 = new ArrayList<Option>();
+            qOptions3.add(new Option("Cocoa Cola"));
+            // 7
+            qOptions3.add(new Option("Water"));
+            // 8
+
+            Question.QuestionType qType3 = Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICE;
+            Question question3 = new Question("Your favorite cold beverages", qType3, "", qOptions3);
+            question3.setOptional(true);
+            question3.setRequiredPreviousOption("teaAnswer");
+            questions.add(question3);
+            // 4
+
+            List<Option> qOptions4 = new ArrayList<Option>();
+
+
+            Question.QuestionType qType4 = Question.QuestionType.QUESTION_TYPE_OPEN;
+            Question question4 = new Question("Describe how you feel about Windows XP", qType4, "", qOptions4);
+            question4.setOptional(true);
+            questions.add(question4);
+            // 5
             mSurvey = new Survey(questions);
 
             setActiveQuestion(mSurvey.getFirstQuestion());
@@ -120,6 +150,18 @@ public class MainActivity extends ActionBarActivity {
             Question newQuestion;
             if (view == mNextButton) {
                 newQuestion = currentQuestion.getNext();
+                // We have no questions in that direction
+                if (newQuestion == null) {
+                    return;
+                }
+
+                String requiredPrevious = newQuestion.getRequiredPreviousOption();
+                if (requiredPrevious != null) {
+                    Option answered = currentQuestion.getAnsweredOption();
+                    if (answered != null && !answered.getTitle().equals(requiredPrevious)) {
+                        newQuestion = newQuestion.getNext();
+                    }
+                }
             } else {
                 newQuestion = currentQuestion.getPrevious();
             }
