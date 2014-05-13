@@ -131,7 +131,7 @@ The second part of the code generation generates a Web application for answering
 \caption{A figure displaying the code generation flow of the HTML implementation.}
 \label{fig:htmlgen}
 \end{figure}
-The flow of the HTML implementation is depicted in fig. \ref{fig:htmlgen}. The HTML code generation works as a single pipeline, each phase of the code, Prologue, Body and Epilogue are added together to produce the final result. Semantics and presentation is mixed through the code. Therefore controlling logic, such as  checking whether all non-optional questions have been answered, are defined in proximity with purely presentation concepts, like the colors and fonts to be used. 
+The flow of the HTML implementation is depicted in fig. \ref{fig:htmlgen}. The HTML code generation works as a single pipeline, each phase of the code, Prologue, Body and Epilogue are added together to produce the final result. Semantics and presentation is mixed through the code.  
 
 In the HTML Prologue we can find the basic header of an HTML file, defining things like the page title, meta tags to assist search engines in finding the page. The page's style is also defined in the header using CSS, which minimizes to a certain extend how much the actual content is mixed with presentation logic. The vast majority of the Prologue is static until we reach the javascript logic which controls the final submission of the form. In this script all preconditions are checked (all non-optional questions have at least an answer) which allows the e-mail with the answers to be sent. 
 
