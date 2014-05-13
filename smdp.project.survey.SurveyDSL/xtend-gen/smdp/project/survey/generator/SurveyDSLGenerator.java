@@ -18,6 +18,7 @@ import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import smdp.project.survey.generator.HTMLGenerator;
 import smdp.project.survey.validation.SurveyDSLValidator;
 import survey.Answer;
 import survey.MultipleChoice;
@@ -269,7 +270,7 @@ public class SurveyDSLGenerator implements IGenerator {
         _builder.append("        \t");
         _builder.append("\t");
         _builder.append("List<Option> qOptions");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(" = new ArrayList<Option>();");
         _builder.newLineIfNotEmpty();
         {
@@ -280,17 +281,18 @@ public class SurveyDSLGenerator implements IGenerator {
                 _builder.append("        \t");
                 _builder.append("\t");
                 _builder.append("qOptions");
-                _builder.append(questionNumber, "        \t\t");
+                _builder.append(questionNumber, "        		");
                 _builder.append(".add(new Option(\"");
                 String _description = option.getDescription();
-                _builder.append(_description, "        \t\t");
+                _builder.append(_description, "        		");
                 _builder.append("\"));");
                 _builder.newLineIfNotEmpty();
                 _builder.append("        \t");
                 _builder.append("\t");
                 _builder.append("// ");
-                int _optionNumber = optionNumber = (optionNumber + 1);
-                _builder.append(_optionNumber, "        \t\t");
+                int _plus = (optionNumber + 1);
+                int _optionNumber = optionNumber = _plus;
+                _builder.append(_optionNumber, "        		");
                 _builder.newLineIfNotEmpty();
               }
             }
@@ -302,17 +304,18 @@ public class SurveyDSLGenerator implements IGenerator {
                   _builder.append("        \t");
                   _builder.append("\t");
                   _builder.append("qOptions");
-                  _builder.append(questionNumber, "        \t\t");
+                  _builder.append(questionNumber, "        		");
                   _builder.append(".add(new Option(\"");
                   String _description_1 = option_1.getDescription();
-                  _builder.append(_description_1, "        \t\t");
+                  _builder.append(_description_1, "        		");
                   _builder.append("\"));");
                   _builder.newLineIfNotEmpty();
                   _builder.append("        \t");
                   _builder.append("\t");
                   _builder.append("// ");
-                  int _optionNumber_1 = optionNumber = (optionNumber + 1);
-                  _builder.append(_optionNumber_1, "        \t\t");
+                  int _plus_1 = (optionNumber + 1);
+                  int _optionNumber_1 = optionNumber = _plus_1;
+                  _builder.append(_optionNumber_1, "        		");
                   _builder.newLineIfNotEmpty();
                 }
               }
@@ -329,7 +332,7 @@ public class SurveyDSLGenerator implements IGenerator {
         _builder.append("        \t");
         _builder.append("\t");
         _builder.append("Question.QuestionType qType");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(" = ");
         {
           if ((question instanceof MultipleChoice)) {
@@ -347,23 +350,23 @@ public class SurveyDSLGenerator implements IGenerator {
         _builder.append("        \t");
         _builder.append("\t");
         _builder.append("Question question");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(" = new Question(\"");
         String _description_2 = question.getDescription();
-        _builder.append(_description_2, "        \t\t");
+        _builder.append(_description_2, "        		");
         _builder.append("\", qType");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(", \"");
         String _name = question.getName();
-        _builder.append(_name, "        \t\t");
+        _builder.append(_name, "        		");
         _builder.append("\", qOptions");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
         _builder.append("        \t");
         _builder.append("\t");
         _builder.append("question");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(".setOptional(");
         {
           boolean _isIsOptional = question.isIsOptional();
@@ -383,12 +386,12 @@ public class SurveyDSLGenerator implements IGenerator {
           boolean _greaterThan = (_length > 0);
           if (_greaterThan) {
             _builder.append("question");
-            _builder.append(questionNumber, "        \t\t");
+            _builder.append(questionNumber, "        		");
             _builder.append(".setRequiredPreviousOption(\"");
             EList<Answer> _requiredPreviousAnswers_1 = question.getRequiredPreviousAnswers();
             Answer _last = IterableExtensions.<Answer>last(_requiredPreviousAnswers_1);
             String _name_1 = _last.getName();
-            _builder.append(_name_1, "        \t\t");
+            _builder.append(_name_1, "        		");
             _builder.append("\");");
           }
         }
@@ -396,14 +399,15 @@ public class SurveyDSLGenerator implements IGenerator {
         _builder.append("        \t");
         _builder.append("\t");
         _builder.append("questions.add(question");
-        _builder.append(questionNumber, "        \t\t");
+        _builder.append(questionNumber, "        		");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
         _builder.append("        \t");
         _builder.append("\t");
         _builder.append("// ");
-        int _questionNumber = questionNumber = (questionNumber + 1);
-        _builder.append(_questionNumber, "        \t\t");
+        int _plus_2 = (questionNumber + 1);
+        int _questionNumber = questionNumber = _plus_2;
+        _builder.append(_questionNumber, "        		");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -806,70 +810,12 @@ public class SurveyDSLGenerator implements IGenerator {
     return _builder;
   }
   
-  public static CharSequence compileManifest(final Survey it) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-    _builder.newLine();
-    _builder.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"");
-    _builder.newLine();
-    _builder.append("    \t");
-    _builder.append("package=\"dk.itu.smdp.surveygen.survey\" >");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("<application");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("android:allowBackup=\"true\"");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("android:icon=\"@drawable/ic_launcher\"");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("android:label=\"@string/app_name\"");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("android:theme=\"@style/AppTheme\" >");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("<activity");
-    _builder.newLine();
-    _builder.append("            ");
-    _builder.append("android:name=\"dk.itu.smdp.surveygen.survey.MainActivity\"");
-    _builder.newLine();
-    _builder.append("            ");
-    _builder.append("android:label=\"@string/app_name\" >");
-    _builder.newLine();
-    _builder.append("            ");
-    _builder.append("<intent-filter>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<action android:name=\"android.intent.action.MAIN\" />");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<category android:name=\"android.intent.category.LAUNCHER\" />");
-    _builder.newLine();
-    _builder.append("            ");
-    _builder.append("</intent-filter>");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("</activity>");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("</application>");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("</manifest>");
-    _builder.newLine();
-    return _builder;
-  }
-  
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
     TreeIterator<EObject> _allProperContents = EcoreUtil.<EObject>getAllProperContents(resource, false);
     final Function1<EObject,Boolean> _function = new Function1<EObject,Boolean>() {
       public Boolean apply(final EObject it) {
-        return Boolean.valueOf(SurveyDSLValidator.constraint(it));
+        boolean _constraint = SurveyDSLValidator.constraint(it);
+        return Boolean.valueOf(_constraint);
       }
     };
     boolean _forall = IteratorExtensions.<EObject>forall(_allProperContents, _function);
@@ -880,10 +826,14 @@ public class SurveyDSLGenerator implements IGenerator {
       final Procedure1<Survey> _function_1 = new Procedure1<Survey>() {
         public void apply(final Survey it) {
           final String fname = "MainActivity";
+          String _plus = ("app-gen/survey/" + fname);
+          String _plus_1 = (_plus + ".java");
           CharSequence _compileMainActivity = SurveyDSLGenerator.compileMainActivity(it);
-          fsa.generateFile((("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname) + ".java"), _compileMainActivity);
-          CharSequence _compileManifest = SurveyDSLGenerator.compileManifest(it);
-          fsa.generateFile((("app-gen/" + "AndroidManifest") + ".xml"), _compileManifest);
+          fsa.generateFile(_plus_1, _compileMainActivity);
+          String _plus_2 = ("html-gen/survey/" + fname);
+          String _plus_3 = (_plus_2 + ".html");
+          CharSequence _generateHTMLActivity = HTMLGenerator.generateHTMLActivity(it);
+          fsa.generateFile(_plus_3, _generateHTMLActivity);
         }
       };
       IterableExtensions.<Survey>forEach(_filter, _function_1);

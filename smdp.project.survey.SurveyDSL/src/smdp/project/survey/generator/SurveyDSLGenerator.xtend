@@ -116,32 +116,32 @@ public class MainActivity extends ActionBarActivity {
 
         private void createSurvey() {
         	List<Question> questions = new ArrayList<Question>();
-        	Â«var questionNumber = 1Â»
-        	Â«var optionNumber = 1Â»
-        	Â«FOR question : questionsÂ»
+        	«var questionNumber = 1»
+        	«var optionNumber = 1»
+        	«FOR question : questions»
         	
-        		List<Option> qOptionsÂ«questionNumberÂ» = new ArrayList<Option>();
-        		Â«IF question instanceof MultipleChoiceÂ»
-        			Â«FOR option : (question as MultipleChoice).getAnswers()Â»
-        				qOptionsÂ«questionNumberÂ».add(new Option("Â«option.descriptionÂ»"));
-        				// Â«optionNumber = optionNumber + 1Â»
-        			Â«ENDFORÂ»
-        		Â«ELSEIF question instanceof RadioChoiceÂ»
-        			Â«FOR option : (question as RadioChoice).getAnswers()Â»
-        				qOptionsÂ«questionNumberÂ».add(new Option("Â«option.descriptionÂ»"));
-        				// Â«optionNumber = optionNumber + 1Â»
-        			Â«ENDFORÂ»
-        		Â«ELSEÂ»
+        		List<Option> qOptions«questionNumber» = new ArrayList<Option>();
+        		«IF question instanceof MultipleChoice»
+        			«FOR option : (question as MultipleChoice).getAnswers()»
+        				qOptions«questionNumber».add(new Option("«option.description»"));
+        				// «optionNumber = optionNumber + 1»
+        			«ENDFOR»
+        		«ELSEIF question instanceof RadioChoice»
+        			«FOR option : (question as RadioChoice).getAnswers()»
+        				qOptions«questionNumber».add(new Option("«option.description»"));
+        				// «optionNumber = optionNumber + 1»
+        			«ENDFOR»
+        		«ELSE»
         			
-        		Â«ENDIFÂ»
+        		«ENDIF»
         	
-        		Question.QuestionType qTypeÂ«questionNumberÂ» = Â«IF question instanceof MultipleChoiceÂ»Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICEÂ«ELSEIF question instanceof RadioChoiceÂ»Question.QuestionType.QUESTION_TYPE_SINGLE_CHOICEÂ«ELSEÂ»Question.QuestionType.QUESTION_TYPE_OPENÂ«ENDIFÂ»;
-        		Question questionÂ«questionNumberÂ» = new Question("Â«question.descriptionÂ»", qTypeÂ«questionNumberÂ», "Â«question.nameÂ»", qOptionsÂ«questionNumberÂ»);
-        		questionÂ«questionNumberÂ».setOptional(Â«IF question.isIsOptional()Â»trueÂ«ELSEÂ»falseÂ«ENDIFÂ»);
-        		Â«IF question.getRequiredPreviousAnswers().length > 0Â»questionÂ«questionNumberÂ».setRequiredPreviousOption("Â«question.getRequiredPreviousAnswers().last.getName()Â»");Â«ENDIFÂ»
-        		questions.add(questionÂ«questionNumberÂ»);
-        		// Â«questionNumber = questionNumber + 1Â»
-        	Â«ENDFORÂ»
+        		Question.QuestionType qType«questionNumber» = «IF question instanceof MultipleChoice»Question.QuestionType.QUESTION_TYPE_MULTIPLE_CHOICE«ELSEIF question instanceof RadioChoice»Question.QuestionType.QUESTION_TYPE_SINGLE_CHOICE«ELSE»Question.QuestionType.QUESTION_TYPE_OPEN«ENDIF»;
+        		Question question«questionNumber» = new Question("«question.description»", qType«questionNumber», "«question.name»", qOptions«questionNumber»);
+        		question«questionNumber».setOptional(«IF question.isIsOptional()»true«ELSE»false«ENDIF»);
+        		«IF question.getRequiredPreviousAnswers().length > 0»question«questionNumber».setRequiredPreviousOption("«question.getRequiredPreviousAnswers().last.getName()»");«ENDIF»
+        		questions.add(question«questionNumber»);
+        		// «questionNumber = questionNumber + 1»
+        	«ENDFOR»
             mSurvey = new Survey(questions);
 
             setActiveQuestion(mSurvey.getFirstQuestion());
@@ -292,41 +292,14 @@ public class MainActivity extends ActionBarActivity {
 		'''
 	}
 	
-	def static compileManifest(Survey it){
-		'''
-		<?xml version="1.0" encoding="utf-8"?>
-		<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    	package="dk.itu.smdp.surveygen.survey" >
-
-		    <application
-		        android:allowBackup="true"
-		        android:icon="@drawable/ic_launcher"
-		        android:label="@string/app_name"
-		        android:theme="@style/AppTheme" >
-		        <activity
-		            android:name="dk.itu.smdp.surveygen.survey.MainActivity"
-		            android:label="@string/app_name" >
-		            <intent-filter>
-		                <action android:name="android.intent.action.MAIN" />
-		
-		                <category android:name="android.intent.category.LAUNCHER" />
-		            </intent-filter>
-		        </activity>
-		    </application>
-
-		</manifest>
-		'''
-		
-	}
-	
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		if(EcoreUtil.getAllProperContents(resource, false).forall[SurveyDSLValidator.constraint(it)])
 			resource.allContents.toIterable.filter(typeof(Survey)).
 				forEach [ Survey it |
 					val fname = "MainActivity"
 					// generate Java implementation
-					fsa.generateFile("app-gen/src/dk/itu/smdp/surveygen/survey/" + fname + ".java", it.compileMainActivity)
-					fsa.generateFile("app-gen/" + "AndroidManifest" + ".xml", it.compileManifest)
+					fsa.generateFile("app-gen/survey/" + fname + ".java", it.compileMainActivity)
+					fsa.generateFile("html-gen/survey/" + fname + ".html", HTMLGenerator.generateHTMLActivity(it))
 				]
 		else println("Constraints violated. Either a question contains a reference to its own answer or a description string is empty.")
 	}
