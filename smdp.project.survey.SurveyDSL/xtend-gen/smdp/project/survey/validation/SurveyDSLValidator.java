@@ -47,13 +47,13 @@ public class SurveyDSLValidator extends AbstractSurveyDSLValidator {
             String _trim = _description.trim();
             boolean _equals = _trim.equals("");
             boolean _not_1 = (!_equals);
-            _and = (_not && _not_1);
+            _and = _not_1;
           }
           return Boolean.valueOf(_and);
         }
       };
       boolean _forall = IterableExtensions.<Answer>forall(_answers, _function);
-      _and = (_not && _forall);
+      _and = _forall;
     }
     return _and;
   }
@@ -82,13 +82,13 @@ public class SurveyDSLValidator extends AbstractSurveyDSLValidator {
             String _trim = _description.trim();
             boolean _equals = _trim.equals("");
             boolean _not_1 = (!_equals);
-            _and = (_not && _not_1);
+            _and = _not_1;
           }
           return Boolean.valueOf(_and);
         }
       };
       boolean _forall = IterableExtensions.<Answer>forall(_answers, _function);
-      _and = (_not && _forall);
+      _and = _forall;
     }
     return _and;
   }
@@ -107,7 +107,7 @@ public class SurveyDSLValidator extends AbstractSurveyDSLValidator {
       OpenAnswer _openAnswer = choice.getOpenAnswer();
       boolean _contains = _requiredPreviousAnswers.contains(_openAnswer);
       boolean _not_1 = (!_contains);
-      _and = (_not && _not_1);
+      _and = _not_1;
     }
     return _and;
   }
